@@ -11,4 +11,19 @@ export type User = {
 
 export type Auth = {
     user: User;
+    permissions: {
+        manageSiteSettings: boolean;
+        viewBanners: boolean;
+        createBanners: boolean;
+        editBanners: boolean;
+        deleteBanners: boolean;
+        viewPackages: boolean;
+        createPackages: boolean;
+        editPackages: boolean;
+        deletePackages: boolean;
+        viewTestimonials: boolean;
+        createTestimonials: boolean;
+        editTestimonials: boolean;
+        deleteTestimonials: boolean;
+    };
 };

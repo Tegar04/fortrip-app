@@ -40,6 +40,21 @@ class HandleInertiaRequests extends Middleware
             'name' => config('app.name'),
             'auth' => [
                 'user' => $request->user(),
+                'permissions' => [
+                    'manageSiteSettings' => $request->user()?->can('manage site settings') ?? false,
+                    'viewBanners' => $request->user()?->can('view banners') ?? false,
+                    'createBanners' => $request->user()?->can('create banners') ?? false,
+                    'editBanners' => $request->user()?->can('edit banners') ?? false,
+                    'deleteBanners' => $request->user()?->can('delete banners') ?? false,
+                    'viewPackages' => $request->user()?->can('view packages') ?? false,
+                    'createPackages' => $request->user()?->can('create packages') ?? false,
+                    'editPackages' => $request->user()?->can('edit packages') ?? false,
+                    'deletePackages' => $request->user()?->can('delete packages') ?? false,
+                    'viewTestimonials' => $request->user()?->can('view testimonials') ?? false,
+                    'createTestimonials' => $request->user()?->can('create testimonials') ?? false,
+                    'editTestimonials' => $request->user()?->can('edit testimonials') ?? false,
+                    'deleteTestimonials' => $request->user()?->can('delete testimonials') ?? false,
+                ],
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];

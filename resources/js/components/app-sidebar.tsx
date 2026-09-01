@@ -1,5 +1,14 @@
-import { Link } from '@inertiajs/react';
-import { BookOpen, FolderGit2, LayoutGrid } from 'lucide-react';
+import { Link, usePage } from '@inertiajs/react';
+import {
+    BookOpen,
+    FolderGit2,
+    Images,
+    LayoutGrid,
+    MapPinned,
+    MessageSquareQuote,
+    Settings2,
+} from 'lucide-react';
+import { edit as editSiteSettings } from '@/actions/App/Http/Controllers/Admin/SiteSettingController';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -14,15 +23,10 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
+import { index as bannersIndex } from '@/routes/admin/banners';
+import { index as packagesIndex } from '@/routes/admin/packages';
+import { index as testimonialsIndex } from '@/routes/admin/testimonials';
 import type { NavItem } from '@/types';
-
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: dashboard(),
-        icon: LayoutGrid,
-    },
-];
 
 const footerNavItems: NavItem[] = [
     {
@@ -38,6 +42,47 @@ const footerNavItems: NavItem[] = [
 ];
 
 export function AppSidebar() {
+    const { auth } = usePage().props;
+    const mainNavItems: NavItem[] = [
+        {
+            title: 'Dashboard',
+            href: dashboard(),
+            icon: LayoutGrid,
+        },
+    ];
+
+    if (auth.permissions.viewBanners) {
+        mainNavItems.push({
+            title: 'Banners',
+            href: bannersIndex(),
+            icon: Images,
+        });
+    }
+
+    if (auth.permissions.viewPackages) {
+        mainNavItems.push({
+            title: 'Packages',
+            href: packagesIndex(),
+            icon: MapPinned,
+        });
+    }
+
+    if (auth.permissions.viewTestimonials) {
+        mainNavItems.push({
+            title: 'Testimonials',
+            href: testimonialsIndex(),
+            icon: MessageSquareQuote,
+        });
+    }
+
+    if (auth.permissions.manageSiteSettings) {
+        mainNavItems.push({
+            title: 'Site settings',
+            href: editSiteSettings(),
+            icon: Settings2,
+        });
+    }
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>

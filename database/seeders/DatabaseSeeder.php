@@ -19,15 +19,11 @@ class DatabaseSeeder extends Seeder
     {
         /*
         |--------------------------------------------------------------------------
-        | USER ADMIN
+        | ROLES & PERMISSIONS (juga membuat user admin & staff)
         |--------------------------------------------------------------------------
         */
 
-        User::factory()->create([
-            'name' => 'Admin Travel',
-            'email' => 'admin@travel.com',
-        ]);
-
+        $this->call(RoleAndPermissionSeeder::class);
 
         /*
         |--------------------------------------------------------------------------
@@ -65,7 +61,6 @@ class DatabaseSeeder extends Seeder
             'value' => 'Nikmati pengalaman liburan terbaik dengan paket wisata pilihan.',
         ]);
 
-
         /*
         |--------------------------------------------------------------------------
         | BANNERS
@@ -73,7 +68,6 @@ class DatabaseSeeder extends Seeder
         */
 
         Banner::factory()->count(3)->create();
-
 
         /*
         |--------------------------------------------------------------------------
@@ -85,7 +79,6 @@ class DatabaseSeeder extends Seeder
             ->count(10)
             ->create();
 
-
         /*
         |--------------------------------------------------------------------------
         | TESTIMONIALS
@@ -96,7 +89,6 @@ class DatabaseSeeder extends Seeder
             ->count(6)
             ->create();
 
-
         /*
         |--------------------------------------------------------------------------
         | CUSTOMERS
@@ -106,7 +98,6 @@ class DatabaseSeeder extends Seeder
         $customers = Customer::factory()
             ->count(15)
             ->create();
-
 
         /*
         |--------------------------------------------------------------------------
@@ -143,9 +134,8 @@ class DatabaseSeeder extends Seeder
                     ]),
                 ]);
 
-
                 $invoice = Invoice::create([
-                    'invoice_number' => 'INV-' . now()->format('Y') . '-' .
+                    'invoice_number' => 'INV-'.now()->format('Y').'-'.
                         str_pad(
                             $booking->id,
                             5,
@@ -168,7 +158,6 @@ class DatabaseSeeder extends Seeder
                     ]),
                 ]);
 
-
                 /*
                 |--------------------------------------------------------------------------
                 | PAYMENT
@@ -180,8 +169,7 @@ class DatabaseSeeder extends Seeder
                     Payment::create([
                         'invoice_id' => $invoice->id,
 
-                        'payment_reference' =>
-                            'PAY-' . fake()->unique()->numerify('########'),
+                        'payment_reference' => 'PAY-'.fake()->unique()->numerify('########'),
 
                         'amount' => $invoice->amount,
 
