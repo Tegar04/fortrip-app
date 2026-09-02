@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\BannerController;
+use App\Http\Controllers\Admin\BookingController;
+use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\PackageController;
 use App\Http\Controllers\Admin\SiteSettingController;
 use App\Http\Controllers\Admin\TestimonialController;
@@ -62,4 +64,20 @@ Route::prefix('admin')
             ->middlewareFor(['create', 'store'], 'permission:create testimonials')
             ->middlewareFor(['edit', 'update'], 'permission:edit testimonials')
             ->middlewareFor('destroy', 'permission:delete testimonials');
+
+        Route::resource('customers', CustomerController::class)
+            ->except('show')
+            ->middlewareFor('index', 'permission:view customers')
+            ->middlewareFor(['create', 'store'], 'permission:create customers')
+            ->middlewareFor(['edit', 'update'], 'permission:edit customers')
+            ->middlewareFor('destroy', 'permission:delete customers');
+
+        Route::patch('bookings/{booking}/status', [BookingController::class, 'updateStatus'])
+            ->middleware('permission:edit bookings')
+            ->name('bookings.status.update');
+        Route::resource('bookings', BookingController::class)
+            ->middlewareFor(['index', 'show'], 'permission:view bookings')
+            ->middlewareFor(['create', 'store'], 'permission:create bookings')
+            ->middlewareFor(['edit', 'update'], 'permission:edit bookings')
+            ->middlewareFor('destroy', 'permission:delete bookings');
     });

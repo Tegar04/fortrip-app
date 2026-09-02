@@ -25,5 +25,13 @@ export type Auth = {
         createTestimonials: boolean;
         editTestimonials: boolean;
         deleteTestimonials: boolean;
+        viewCustomers: boolean;
+        createCustomers: boolean;
+        editCustomers: boolean;
+        deleteCustomers: boolean;
+        viewBookings: boolean;
+        createBookings: boolean;
+        editBookings: boolean;
+        deleteBookings: boolean;
     };
 };

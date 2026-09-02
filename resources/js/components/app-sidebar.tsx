@@ -1,12 +1,14 @@
 import { Link, usePage } from '@inertiajs/react';
 import {
     BookOpen,
+    CalendarCheck2,
     FolderGit2,
     Images,
     LayoutGrid,
     MapPinned,
     MessageSquareQuote,
     Settings2,
+    UsersRound,
 } from 'lucide-react';
 import { edit as editSiteSettings } from '@/actions/App/Http/Controllers/Admin/SiteSettingController';
 import AppLogo from '@/components/app-logo';
@@ -24,6 +26,8 @@ import {
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
 import { index as bannersIndex } from '@/routes/admin/banners';
+import { index as bookingsIndex } from '@/routes/admin/bookings';
+import { index as customersIndex } from '@/routes/admin/customers';
 import { index as packagesIndex } from '@/routes/admin/packages';
 import { index as testimonialsIndex } from '@/routes/admin/testimonials';
 import type { NavItem } from '@/types';
@@ -72,6 +76,22 @@ export function AppSidebar() {
             title: 'Testimonials',
             href: testimonialsIndex(),
             icon: MessageSquareQuote,
+        });
+    }
+
+    if (auth.permissions.viewCustomers) {
+        mainNavItems.push({
+            title: 'Customers',
+            href: customersIndex(),
+            icon: UsersRound,
+        });
+    }
+
+    if (auth.permissions.viewBookings) {
+        mainNavItems.push({
+            title: 'Bookings',
+            href: bookingsIndex(),
+            icon: CalendarCheck2,
         });
     }
 

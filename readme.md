@@ -9,7 +9,7 @@ Konten website disimpan di database sehingga dapat dikelola melalui dashboard ta
 
 ## Status Proyek
 
-Update terakhir: **1 September 2026**.
+Update terakhir: **2 September 2026**.
 
 | Area | Status | Catatan |
 |---|---|---|
@@ -23,7 +23,7 @@ Update terakhir: **1 September 2026**.
 | Banner CRUD | ✅ Selesai | Upload, toggle aktif, dan pengurutan |
 | Package CRUD | ✅ Selesai | Cover, gallery, slug, status aktif, dan unggulan |
 | Testimonial CRUD | ✅ Selesai | Foto opsional, rating, dan toggle aktif |
-| Customer dan Booking | ⏳ Berikutnya | Belum dikerjakan |
+| Customer dan Booking | 🟡 Sebagian selesai | CRUD customer dan manajemen booking admin selesai; form publik menunggu halaman package |
 | Invoice, Payment, dan PDF | ⏳ Belum | — |
 | Laporan dan Export Excel | ⏳ Belum | — |
 | Landing page publik dinamis | ⏳ Belum | — |
@@ -293,10 +293,11 @@ npm run build
 
 Status verifikasi terakhir:
 
-- 87 test lulus;
+- 106 test lulus;
 - 3 test dilewati;
-- 320 assertion;
-- PHPStan, TypeScript, lint, Pint, dan production build berhasil.
+- 400 assertion;
+- TypeScript, lint file terkait, Pint, dan production build berhasil;
+- PHPStan masih terhambat error bootstrap Larastan `LARAVEL_VERSION` pada environment PHP 8.5.
 
 ## Roadmap
 
@@ -305,14 +306,15 @@ Site Settings CRUD                    ✅
 Banner CRUD                           ✅
 Package CRUD                          ✅
 Testimonial CRUD                      ✅
-Customer + Booking                    ← tahap berikutnya
+Customer + Booking Admin              ✅
+Form Booking Publik                   menunggu halaman detail package
 Invoice + Payment + PDF
 Laporan + Export Excel
 Landing Page Publik Dinamis
 Polish UI + SEO + Deployment
 ```
 
-Tahap selanjutnya adalah membangun **Customer & Booking Module**, meliputi CRUD customer, pengelolaan booking, validasi jadwal dan peserta, perhitungan total harga, serta alur status booking.
+Tahap selanjutnya adalah membangun **Invoice + Payment Module**. Form booking publik akan dihubungkan ketika halaman detail package pada landing page dinamis dibuat.
 
 ## Production
 

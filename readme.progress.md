@@ -6,7 +6,7 @@ Saya adalah seorang owner bisnis Trip & Travel liburan. Saya ingin membuat websi
 
 ---
 
-## Status Progress — Update 1 September 2026
+## Status Progress — Update 2 September 2026
 
 ### Ringkasan Status
 
@@ -29,7 +29,7 @@ Saya adalah seorang owner bisnis Trip & Travel liburan. Saya ingin membuat websi
 | Banner CRUD | ✅ Selesai | CRUD, upload gambar, toggle aktif, dan drag-and-drop reorder tersedia |
 | Package CRUD | ✅ Selesai | CRUD, cover/gallery, slug otomatis, toggle aktif/unggulan, dan test tersedia |
 | Testimonial CRUD | ✅ Selesai | CRUD, foto opsional, rating bintang, toggle aktif, dan test tersedia |
-| Customer & Booking module | ⏳ Belum | Tahap berikutnya |
+| Customer & Booking module | 🟡 Sebagian selesai | Modul admin selesai; form booking publik menunggu halaman detail package |
 | Invoice + PDF | ⏳ Belum | — |
 | Laporan + Export Excel | ⏳ Belum | — |
 | Landing page publik dinamis | ⏳ Belum | — |
@@ -189,6 +189,11 @@ GET  /admin/testimonials        → admin.testimonials.index (admin/staff + perm
 POST /admin/testimonials        → admin.testimonials.store (admin + permission)
 PATCH /admin/testimonials/{id}/toggle → toggle status aktif
 GET/PUT/DELETE /admin/testimonials/{id} → edit/update/destroy sesuai permission
+GET/POST           /admin/customers
+GET/PUT/DELETE     /admin/customers/{id}
+GET/POST           /admin/bookings
+GET/PUT/DELETE     /admin/bookings/{id}
+PATCH              /admin/bookings/{id}/status
 ```
 
 ---
@@ -210,10 +215,10 @@ GET/PUT/DELETE /admin/testimonials/{id} → edit/update/destroy sesuai permissio
 ④ Testimonial CRUD (dengan upload foto) ✅
       │
       ▼
-POSISI SAAT INI
+⑤ Customer + Booking module (admin) ✅
       │
       ▼
-⑤ Customer + Booking module
+POSISI SAAT INI
       │
       ▼
 ⑥ Invoice + Payment + Generate PDF
@@ -284,13 +289,17 @@ Yang sudah dibuat:
 
 ### ⑤ Customer & Booking Module
 
-Yang perlu dibuat:
-- `CustomerController` — CRUD data pelanggan
-- `BookingController` — list, detail, ubah status booking
-- Form booking publik (diisi pelanggan saat memesan)
-- Validasi booking: tanggal keberangkatan, jumlah peserta
-- Perhitungan `total_price` otomatis: `harga paket × jumlah peserta`
-- Status booking: `pending → confirmed → completed` atau `cancelled`
+Yang sudah dibuat:
+- `CustomerController` dengan CRUD data pelanggan dan proteksi customer yang sudah mempunyai booking
+- `BookingController` dengan list, create, detail, edit booking pending, hapus, dan ubah status
+- Form Request dengan authorization berbasis permission serta validasi tanggal keberangkatan dan jumlah peserta
+- Perhitungan `total_price` di server berdasarkan harga package × jumlah peserta; nilai total/status dari request tidak dipercaya
+- Alur status terbatas: `pending → confirmed → completed`, dengan pembatalan dari `pending` atau `confirmed`
+- Halaman React admin untuk customer dan booking, navigasi berbasis permission, serta Wayfinder typed routes
+- Feature test untuk akses admin/staff, validasi, kalkulasi harga, transisi status, dan perlindungan penghapusan
+
+Yang masih perlu dibuat:
+- Form booking publik di halaman detail package (dikerjakan bersama landing page publik dinamis)
 - Notifikasi email saat booking dikonfirmasi (opsional)
 
 ### ⑥ Invoice + Payment + PDF
