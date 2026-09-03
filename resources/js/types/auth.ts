@@ -33,5 +33,12 @@ export type Auth = {
         createBookings: boolean;
         editBookings: boolean;
         deleteBookings: boolean;
+        viewInvoices: boolean;
+        createInvoices: boolean;
+        editInvoices: boolean;
+        deleteInvoices: boolean;
+        downloadInvoices: boolean;
+        viewReports: boolean;
+        exportReports: boolean;
     };
 };

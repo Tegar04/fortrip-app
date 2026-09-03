@@ -6,7 +6,7 @@ Saya adalah seorang owner bisnis Trip & Travel liburan. Saya ingin membuat websi
 
 ---
 
-## Status Progress — Update 2 September 2026
+## Status Progress — Update 3 September 2026
 
 ### Ringkasan Status
 
@@ -24,14 +24,14 @@ Saya adalah seorang owner bisnis Trip & Travel liburan. Saya ingin membuat websi
 | Spatie Media Library | ✅ Selesai | Banner, Package, Testimonial dikonfigurasi |
 | Wayfinder (typed routes) | ✅ Selesai | Actions & routes TypeScript ter-generate |
 | Route publik & auth | ✅ Selesai | `/`, `/login`, `/register`, `/dashboard`, settings |
-| npm run dev | ✅ Berjalan | Vite dev server aktif tanpa error |
+| Development & production build | ✅ Selesai | Vite dev server dan `npm run build` berjalan tanpa error |
 | Site Settings CRUD | ✅ Selesai | Edit/update, permission admin, validasi, UI React, dan test tersedia |
 | Banner CRUD | ✅ Selesai | CRUD, upload gambar, toggle aktif, dan drag-and-drop reorder tersedia |
 | Package CRUD | ✅ Selesai | CRUD, cover/gallery, slug otomatis, toggle aktif/unggulan, dan test tersedia |
 | Testimonial CRUD | ✅ Selesai | CRUD, foto opsional, rating bintang, toggle aktif, dan test tersedia |
 | Customer & Booking module | 🟡 Sebagian selesai | Modul admin selesai; form booking publik menunggu halaman detail package |
-| Invoice + PDF | ⏳ Belum | — |
-| Laporan + Export Excel | ⏳ Belum | — |
+| Invoice + Payment + PDF | ✅ Selesai | Generate invoice, histori pembayaran, status otomatis, dan PDF A4 |
+| Laporan + Export Excel | ✅ Selesai | Filter periode, statistik, grafik Recharts, tabel detail, dan export XLSX |
 | Landing page publik dinamis | ⏳ Belum | — |
 | Polish UI, SEO, deployment | ⏳ Belum | Tahap akhir |
 
@@ -194,6 +194,14 @@ GET/PUT/DELETE     /admin/customers/{id}
 GET/POST           /admin/bookings
 GET/PUT/DELETE     /admin/bookings/{id}
 PATCH              /admin/bookings/{id}/status
+GET/POST           /admin/invoices
+GET                /admin/invoices/create
+GET/DELETE         /admin/invoices/{invoice}
+GET                /admin/invoices/{invoice}/download
+POST               /admin/invoices/{invoice}/payments
+DELETE             /admin/invoices/{invoice}/payments/{payment}
+GET                /admin/reports
+GET                /admin/reports/export
 ```
 
 ---
@@ -218,13 +226,13 @@ PATCH              /admin/bookings/{id}/status
 ⑤ Customer + Booking module (admin) ✅
       │
       ▼
+⑥ Invoice + Payment + Generate PDF ✅
+      │
+      ▼
+⑦ Laporan + Export Excel + Grafik Recharts ✅
+      │
+      ▼
 POSISI SAAT INI
-      │
-      ▼
-⑥ Invoice + Payment + Generate PDF
-      │
-      ▼
-⑦ Laporan + Export Excel
       │
       ▼
 ⑧ Landing Page Publik Dinamis
@@ -304,21 +312,34 @@ Yang masih perlu dibuat:
 
 ### ⑥ Invoice + Payment + PDF
 
-Yang perlu dibuat:
-- `InvoiceController` — generate invoice dari booking, ubah status bayar
-- Nomor invoice otomatis (format: `INV-YYYYMMDD-XXXX`)
-- `PaymentController` — catat histori pembayaran
-- Generate & download invoice PDF menggunakan `barryvdh/laravel-dompdf`
-- Blade view untuk layout PDF invoice (logo, data customer, rincian paket, total)
+Fitur invoice, pembayaran, dan PDF sudah selesai.
+
+Yang sudah dibuat:
+- `InvoiceController` untuk daftar, membuat, melihat, menghapus, dan mengunduh invoice
+- Nomor invoice otomatis dengan format `INV-YYYYMMDD-XXXX`
+- `PaymentController` untuk mencatat dan menghapus histori pembayaran
+- Validasi pembayaran agar tidak melebihi sisa tagihan
+- Status invoice otomatis: `unpaid`, `overdue`, dan `paid`
+- Generate dan download PDF A4 menggunakan `barryvdh/laravel-dompdf`
+- Blade view `resources/views/pdf/invoice.blade.php` untuk identitas perusahaan, customer, paket, total, dan histori pembayaran
+- Transaksi dan `lockForUpdate()` untuk mencegah duplikasi invoice dan race condition pembayaran
+- Halaman React daftar, create, dan detail invoice
+- Feature test untuk authorization, validasi, pembayaran, status invoice, dan PDF
 
 ### ⑦ Laporan & Export Excel
 
-Yang perlu dibuat:
-- `ReportController` — halaman ringkasan laporan
-- Filter berdasarkan periode (tanggal mulai & selesai)
-- Statistik: total booking, total revenue, booking per status
-- Export ke Excel menggunakan `maatwebsite/excel`
-- `BookingsExport` class dengan filter periode
+Fitur laporan dan export Excel sudah selesai.
+
+Yang sudah dibuat:
+- `ReportController` untuk halaman ringkasan dan download laporan
+- Filter tanggal mulai dan selesai dengan default bulan berjalan
+- Statistik total booking, nilai booking non-cancelled, total revenue pembayaran `paid`, dan booking per status
+- Tabel detail booking dengan pagination serta tautan ke booking dan invoice
+- Stacked `BarChart` untuk tren booking per status dan `AreaChart` untuk tren revenue menggunakan Recharts
+- Granularitas grafik otomatis: harian untuk maksimal 31 hari, mingguan untuk 32–180 hari, dan bulanan untuk periode lebih panjang
+- `BookingsExport` dengan filter periode, format tanggal/Rupiah, freeze header, auto-filter, dan perlindungan formula injection
+- Permission terpisah `view reports` dan `export reports`
+- Feature test untuk filter, statistik, grafik, authorization, dan workbook XLSX nyata
 
 ### ⑧ Landing Page Publik Dinamis
 
@@ -351,7 +372,7 @@ Laravel (Backend + Controller)
  └─ resources/js
      ├─ pages/auth/        → halaman login, register, reset password
      ├─ pages/settings/    → profile, security, appearance
-     ├─ pages/admin/       → dashboard CMS (belum dibuat)
+     ├─ pages/admin/       → dashboard CMS, customer, booking, invoice, dan laporan
      ├─ pages/             → welcome, dashboard
      ├─ layouts/           → auth layout, app layout, settings layout
      └─ components/        → komponen UI shared
@@ -373,6 +394,7 @@ Laravel (Backend + Controller)
 | barryvdh/laravel-dompdf | 3.1.2 | Generate PDF invoice |
 | maatwebsite/excel | 4.0.2 | Export laporan ke Excel |
 | react | 19.2.8 | Frontend UI |
+| recharts | 3.10.1 | Grafik laporan booking dan revenue |
 | tailwindcss | 4.3.3 | Styling |
 | laravel/wayfinder | 0.1.21 | TypeScript typed routes |
 

@@ -19,7 +19,7 @@ class BookingController extends Controller
     public function index(): Response
     {
         $bookings = Booking::query()
-            ->with(['customer:id,name,email,phone,address', 'package:id,title,destination,price'])
+            ->with(['customer:id,name,email,phone,address', 'package:id,title,destination,price', 'invoice:id,booking_id,invoice_number'])
             ->latest('id')
             ->get()
             ->map(fn (Booking $booking): array => $this->bookingData($booking));
@@ -55,7 +55,7 @@ class BookingController extends Controller
 
     public function show(Booking $booking): Response
     {
-        $booking->load(['customer', 'package']);
+        $booking->load(['customer', 'package', 'invoice:id,booking_id,invoice_number']);
 
         return Inertia::render('admin/bookings/show', [
             'booking' => $this->bookingData($booking),
@@ -174,7 +174,7 @@ class BookingController extends Controller
         return number_format($totalPrice, 2, '.', '');
     }
 
-    /** @return array{id: int, departure_date: string, participant_count: int, total_price: string, status: string, available_statuses: list<string>, customer: array{id: int, name: string, email: ?string, phone: string, address: ?string}, package: array{id: int, title: string, destination: string, price: string}} */
+    /** @return array{id: int, departure_date: string, participant_count: int, total_price: string, status: string, available_statuses: list<string>, invoice: array{id: int, invoice_number: string}|null, customer: array{id: int, name: string, email: ?string, phone: string, address: ?string}, package: array{id: int, title: string, destination: string, price: string}} */
     private function bookingData(Booking $booking): array
     {
         return [
@@ -184,6 +184,10 @@ class BookingController extends Controller
             'total_price' => $booking->total_price,
             'status' => $booking->status,
             'available_statuses' => $booking->availableStatusTransitions(),
+            'invoice' => $booking->invoice ? [
+                'id' => $booking->invoice->id,
+                'invoice_number' => $booking->invoice->invoice_number,
+            ] : null,
             'customer' => [
                 'id' => $booking->customer->id,
                 'name' => $booking->customer->name,

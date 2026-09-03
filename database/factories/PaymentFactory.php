@@ -14,7 +14,7 @@ class PaymentFactory extends Factory
     {
         return [
             'invoice_id' => Invoice::factory(),
-            'payment_reference' => 'PAY-' . $this->faker->unique()->numerify('########'),
+            'payment_reference' => 'PAY-'.$this->faker->unique()->numerify('########'),
             'amount' => $this->faker->numberBetween(500000, 5000000),
             'payment_method' => $this->faker->randomElement([
                 'cash',

@@ -9,7 +9,7 @@ Konten website disimpan di database sehingga dapat dikelola melalui dashboard ta
 
 ## Status Proyek
 
-Update terakhir: **2 September 2026**.
+Update terakhir: **3 September 2026**.
 
 | Area | Status | Catatan |
 |---|---|---|
@@ -24,8 +24,8 @@ Update terakhir: **2 September 2026**.
 | Package CRUD | ✅ Selesai | Cover, gallery, slug, status aktif, dan unggulan |
 | Testimonial CRUD | ✅ Selesai | Foto opsional, rating, dan toggle aktif |
 | Customer dan Booking | 🟡 Sebagian selesai | CRUD customer dan manajemen booking admin selesai; form publik menunggu halaman package |
-| Invoice, Payment, dan PDF | ⏳ Belum | — |
-| Laporan dan Export Excel | ⏳ Belum | — |
+| Invoice, Payment, dan PDF | ✅ Selesai | Invoice, histori pembayaran, status otomatis, dan PDF A4 |
+| Laporan dan Export Excel | ✅ Selesai | Filter periode, statistik, grafik Recharts, tabel detail, dan XLSX |
 | Landing page publik dinamis | ⏳ Belum | — |
 | Finalisasi, SEO, dan deployment | ⏳ Belum | Tahap akhir |
 
@@ -48,6 +48,7 @@ Dokumentasi progres yang lebih terperinci tersedia di [`readme.progress.md`](rea
 | Spatie Sluggable | 4.0.3 | Slug otomatis untuk package |
 | Laravel DomPDF | 3.1.2 | Pembuatan invoice PDF |
 | Laravel Excel | 4.0.2 | Export laporan Excel |
+| Recharts | 3.10.1 | Stacked bar chart dan area chart laporan |
 | Pest | 5.1.3 | Automated testing |
 
 ## Arsitektur
@@ -60,6 +61,8 @@ Laravel
 │   └── React + TypeScript + Tailwind CSS
 ├── Spatie Permission
 ├── Spatie Media Library
+├── DomPDF + Laravel Excel
+├── Recharts
 └── Wayfinder typed routes
 ```
 
@@ -177,6 +180,31 @@ Setiap route resource juga menggunakan permission sesuai action-nya.
 - Toggle aktif/nonaktif.
 - Media collection `photo` dengan konversi avatar 120×120.
 
+### Customer dan Booking
+
+- CRUD customer dengan proteksi data yang sudah mempunyai booking.
+- Manajemen booking admin: list, create, detail, edit booking pending, hapus, dan ubah status.
+- Total harga dihitung di server berdasarkan harga package × jumlah peserta.
+- Workflow status terbatas: `pending → confirmed → completed`, dengan pembatalan dari `pending` atau `confirmed`.
+- Form booking publik tetap menunggu halaman detail package.
+
+### Invoice, Payment, dan PDF
+
+- Membuat invoice dari booking non-cancelled dengan nomor otomatis `INV-YYYYMMDD-XXXX`.
+- Mencatat dan menghapus histori pembayaran tanpa boleh melebihi sisa tagihan.
+- Status invoice otomatis: `unpaid`, `overdue`, atau `paid`.
+- Download PDF A4 yang memuat identitas perusahaan, customer, paket, total, sisa tagihan, dan histori pembayaran.
+- Invoice dengan histori pembayaran tidak dapat dihapus.
+
+### Laporan dan Export Excel
+
+- Filter periode berdasarkan tanggal mulai dan selesai, dengan default bulan berjalan.
+- Statistik total booking, nilai booking non-cancelled, revenue pembayaran berhasil, dan booking per status.
+- Stacked `BarChart` untuk tren booking per status dan `AreaChart` untuk tren revenue menggunakan Recharts.
+- Granularitas grafik otomatis harian, mingguan, atau bulanan.
+- Tabel detail booking dengan pagination dan tautan ke booking/invoice.
+- Export XLSX dengan format tanggal/Rupiah, freeze header, auto-filter, dan perlindungan formula injection.
+
 ## Route Admin yang Sudah Aktif
 
 ```text
@@ -199,9 +227,28 @@ DELETE             /admin/packages/{package}/gallery/{media}
 GET/POST           /admin/testimonials
 GET/PUT/DELETE     /admin/testimonials/{testimonial}
 PATCH              /admin/testimonials/{testimonial}/toggle
+
+GET/POST           /admin/customers
+GET/PUT/DELETE     /admin/customers/{customer}
+
+GET/POST           /admin/bookings
+GET/PUT/DELETE     /admin/bookings/{booking}
+PATCH              /admin/bookings/{booking}/status
+
+GET                /admin/invoices
+GET                /admin/invoices/create
+POST               /admin/invoices
+GET                /admin/invoices/{invoice}
+DELETE             /admin/invoices/{invoice}
+GET                /admin/invoices/{invoice}/download
+POST               /admin/invoices/{invoice}/payments
+DELETE             /admin/invoices/{invoice}/payments/{payment}
+
+GET                /admin/reports
+GET                /admin/reports/export
 ```
 
-Route `create` dan `edit` dari setiap resource juga tersedia.
+Route `create` dan `edit` untuk resource yang mendukung action tersebut juga tersedia.
 
 ## Instalasi
 
@@ -293,9 +340,8 @@ npm run build
 
 Status verifikasi terakhir:
 
-- 106 test lulus;
-- 3 test dilewati;
-- 400 assertion;
+- 135 test dijalankan: 132 lulus dan 3 dilewati;
+- 556 assertion;
 - TypeScript, lint file terkait, Pint, dan production build berhasil;
 - PHPStan masih terhambat error bootstrap Larastan `LARAVEL_VERSION` pada environment PHP 8.5.
 
@@ -308,13 +354,13 @@ Package CRUD                          ✅
 Testimonial CRUD                      ✅
 Customer + Booking Admin              ✅
 Form Booking Publik                   menunggu halaman detail package
-Invoice + Payment + PDF
-Laporan + Export Excel
+Invoice + Payment + PDF               ✅
+Laporan + Export Excel + Grafik       ✅
 Landing Page Publik Dinamis
 Polish UI + SEO + Deployment
 ```
 
-Tahap selanjutnya adalah membangun **Invoice + Payment Module**. Form booking publik akan dihubungkan ketika halaman detail package pada landing page dinamis dibuat.
+Tahap selanjutnya adalah membangun **Landing Page Publik Dinamis** dan menghubungkan form booking publik pada halaman detail package.
 
 ## Production
 

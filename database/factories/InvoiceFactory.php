@@ -13,7 +13,7 @@ class InvoiceFactory extends Factory
     public function definition(): array
     {
         return [
-            'invoice_number' => 'INV-' . $this->faker->unique()->numerify('########'),
+            'invoice_number' => 'INV-'.now()->format('Ymd').'-'.$this->faker->unique()->numerify('####'),
             'booking_id' => Booking::factory(),
             'amount' => $this->faker->numberBetween(500000, 10000000),
             'issued_date' => now()->toDateString(),
