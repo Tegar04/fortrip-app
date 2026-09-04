@@ -13,34 +13,12 @@ use Inertia\Response;
 class SiteSettingController extends Controller
 {
     /**
-     * @var array<string, string|null>
-     */
-    private const DEFAULTS = [
-        'company_name' => 'Arcadia Travel',
-        'company_tagline' => null,
-        'company_address' => null,
-        'company_phone' => null,
-        'company_email' => null,
-        'whatsapp_number' => null,
-        'facebook_url' => null,
-        'instagram_url' => null,
-        'youtube_url' => null,
-        'hero_title' => null,
-        'hero_subtitle' => null,
-    ];
-
-    /**
      * Show the site settings form.
      */
     public function edit(): Response
     {
-        $storedSettings = SiteSetting::query()
-            ->whereIn('key', array_keys(self::DEFAULTS))
-            ->pluck('value', 'key')
-            ->all();
-
         return Inertia::render('admin/site-settings', [
-            'settings' => array_replace(self::DEFAULTS, $storedSettings),
+            'settings' => SiteSetting::values(),
         ]);
     }
 

@@ -29,10 +29,10 @@ Saya adalah seorang owner bisnis Trip & Travel liburan. Saya ingin membuat websi
 | Banner CRUD | ✅ Selesai | CRUD, upload gambar, toggle aktif, dan drag-and-drop reorder tersedia |
 | Package CRUD | ✅ Selesai | CRUD, cover/gallery, slug otomatis, toggle aktif/unggulan, dan test tersedia |
 | Testimonial CRUD | ✅ Selesai | CRUD, foto opsional, rating bintang, toggle aktif, dan test tersedia |
-| Customer & Booking module | 🟡 Sebagian selesai | Modul admin selesai; form booking publik menunggu halaman detail package |
+| Customer & Booking module | 🟡 Sebagian selesai | Modul admin selesai dan halaman detail package tersedia; form booking publik belum dibuat |
 | Invoice + Payment + PDF | ✅ Selesai | Generate invoice, histori pembayaran, status otomatis, dan PDF A4 |
 | Laporan + Export Excel | ✅ Selesai | Filter periode, statistik, grafik Recharts, tabel detail, dan export XLSX |
-| Landing page publik dinamis | ⏳ Belum | — |
+| Landing page publik dinamis | 🟡 Sebagian selesai | Home serta daftar/detail paket selesai; booking publik, About, Contact, dan QA visual menunggu tahap berikutnya |
 | Polish UI, SEO, deployment | ⏳ Belum | Tahap akhir |
 
 ---
@@ -345,12 +345,25 @@ Yang sudah dibuat:
 
 Semua konten diambil dari database (dikelola admin via CMS).
 
-Yang perlu dibuat:
-- `HomeController` (publik) — render halaman dengan data dari DB
-- Halaman: Home, Daftar Paket, Detail Paket, Tentang Kami, Kontak
-- Form booking publik di halaman Detail Paket
-- Semua teks, gambar, banner, paket, testimoni bersumber dari database
-- SEO: `<Head>` Inertia dengan title & description dinamis
+Yang sudah dibuat:
+- `HomeController` publik dengan site settings, banner aktif, paket unggulan aktif, dan testimoni aktif
+- `PublicLayout` dengan navbar responsif, mobile navigation, footer, kontak, media sosial, dan CTA WhatsApp
+- Home dinamis dengan hero carousel, fallback hero, Tentang Kami, paket unggulan, testimoni, CTA, dan empty state
+- Pengaturan copy Home serta SEO ditambahkan ke Site Settings admin
+- TypeScript contract untuk data publik dan Wayfinder route Home
+- SEO Home menggunakan `<Head>` Inertia dengan title, description, dan Open Graph dasar
+- Feature test Home dan Site Settings, lint/type check frontend, PHPStan terarah, serta production build berhasil
+- Backend paket publik dengan pagination, detail berdasarkan slug, media gallery, SEO props, dan proteksi paket nonaktif
+- Feature test backend daftar/detail paket dan helper route Wayfinder telah tersedia
+- Halaman React daftar paket dengan grid responsif, pagination, empty state, dan metadata SEO
+- Halaman React detail paket dengan cover hero, deskripsi aman, galeri, CTA WhatsApp, dan metadata SEO
+- Setiap kartu paket terhubung ke halaman detail melalui route Wayfinder
+- Full test suite berhasil: 140 test lolos, 3 dilewati, dan 712 assertion
+
+Yang masih perlu dibuat:
+- Form booking publik pada halaman detail paket
+- Halaman Tentang Kami dan Kontak mandiri
+- SEO teknis lanjutan, error pages, serta QA visual lintas perangkat/browser
 
 ### ⑨ Finalisasi
 

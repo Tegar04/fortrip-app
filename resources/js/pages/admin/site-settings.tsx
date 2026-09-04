@@ -29,6 +29,17 @@ type SiteSettingsForm = {
     youtube_url: string | null;
     hero_title: string;
     hero_subtitle: string | null;
+    about_title: string;
+    about_description: string;
+    home_packages_title: string;
+    home_packages_subtitle: string | null;
+    home_testimonials_title: string;
+    home_testimonials_subtitle: string | null;
+    home_cta_title: string;
+    home_cta_description: string | null;
+    home_cta_button_text: string;
+    seo_default_title: string;
+    seo_default_description: string;
 };
 
 type Props = {
@@ -147,6 +158,217 @@ export default function SiteSettings({ settings }: Props) {
                                             defaultValue={
                                                 settings.company_address ?? ''
                                             }
+                                        />
+                                    </Field>
+                                </CardContent>
+                            </Card>
+
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>Tentang perusahaan</CardTitle>
+                                    <CardDescription>
+                                        Perkenalan singkat yang muncul pada
+                                        halaman utama.
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent className="grid gap-5">
+                                    <Field
+                                        id="about_title"
+                                        label="Judul tentang kami"
+                                        error={errors.about_title}
+                                    >
+                                        <Input
+                                            id="about_title"
+                                            name="about_title"
+                                            defaultValue={settings.about_title}
+                                            required
+                                        />
+                                    </Field>
+
+                                    <Field
+                                        id="about_description"
+                                        label="Deskripsi tentang kami"
+                                        error={errors.about_description}
+                                    >
+                                        <Textarea
+                                            id="about_description"
+                                            name="about_description"
+                                            defaultValue={
+                                                settings.about_description
+                                            }
+                                            rows={5}
+                                            required
+                                        />
+                                    </Field>
+                                </CardContent>
+                            </Card>
+
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>Judul section Home</CardTitle>
+                                    <CardDescription>
+                                        Atur copy untuk paket unggulan dan
+                                        testimoni pelanggan.
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent className="grid gap-5 md:grid-cols-2">
+                                    <Field
+                                        id="home_packages_title"
+                                        label="Judul paket unggulan"
+                                        error={errors.home_packages_title}
+                                    >
+                                        <Input
+                                            id="home_packages_title"
+                                            name="home_packages_title"
+                                            defaultValue={
+                                                settings.home_packages_title
+                                            }
+                                            required
+                                        />
+                                    </Field>
+
+                                    <Field
+                                        id="home_testimonials_title"
+                                        label="Judul testimoni"
+                                        error={errors.home_testimonials_title}
+                                    >
+                                        <Input
+                                            id="home_testimonials_title"
+                                            name="home_testimonials_title"
+                                            defaultValue={
+                                                settings.home_testimonials_title
+                                            }
+                                            required
+                                        />
+                                    </Field>
+
+                                    <Field
+                                        id="home_packages_subtitle"
+                                        label="Deskripsi paket unggulan"
+                                        error={errors.home_packages_subtitle}
+                                    >
+                                        <Textarea
+                                            id="home_packages_subtitle"
+                                            name="home_packages_subtitle"
+                                            defaultValue={
+                                                settings.home_packages_subtitle ??
+                                                ''
+                                            }
+                                        />
+                                    </Field>
+
+                                    <Field
+                                        id="home_testimonials_subtitle"
+                                        label="Deskripsi testimoni"
+                                        error={
+                                            errors.home_testimonials_subtitle
+                                        }
+                                    >
+                                        <Textarea
+                                            id="home_testimonials_subtitle"
+                                            name="home_testimonials_subtitle"
+                                            defaultValue={
+                                                settings.home_testimonials_subtitle ??
+                                                ''
+                                            }
+                                        />
+                                    </Field>
+                                </CardContent>
+                            </Card>
+
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>Call to action</CardTitle>
+                                    <CardDescription>
+                                        Ajakan konsultasi yang ditampilkan
+                                        menjelang footer.
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent className="grid gap-5 md:grid-cols-2">
+                                    <Field
+                                        id="home_cta_title"
+                                        label="Judul CTA"
+                                        error={errors.home_cta_title}
+                                    >
+                                        <Input
+                                            id="home_cta_title"
+                                            name="home_cta_title"
+                                            defaultValue={
+                                                settings.home_cta_title
+                                            }
+                                            required
+                                        />
+                                    </Field>
+
+                                    <Field
+                                        id="home_cta_button_text"
+                                        label="Teks tombol CTA"
+                                        error={errors.home_cta_button_text}
+                                    >
+                                        <Input
+                                            id="home_cta_button_text"
+                                            name="home_cta_button_text"
+                                            defaultValue={
+                                                settings.home_cta_button_text
+                                            }
+                                            required
+                                        />
+                                    </Field>
+
+                                    <Field
+                                        id="home_cta_description"
+                                        label="Deskripsi CTA"
+                                        error={errors.home_cta_description}
+                                        className="md:col-span-2"
+                                    >
+                                        <Textarea
+                                            id="home_cta_description"
+                                            name="home_cta_description"
+                                            defaultValue={
+                                                settings.home_cta_description ??
+                                                ''
+                                            }
+                                        />
+                                    </Field>
+                                </CardContent>
+                            </Card>
+
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>SEO default</CardTitle>
+                                    <CardDescription>
+                                        Judul dan deskripsi hasil pencarian
+                                        untuk halaman utama.
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent className="grid gap-5">
+                                    <Field
+                                        id="seo_default_title"
+                                        label="SEO title"
+                                        error={errors.seo_default_title}
+                                    >
+                                        <Input
+                                            id="seo_default_title"
+                                            name="seo_default_title"
+                                            defaultValue={
+                                                settings.seo_default_title
+                                            }
+                                            required
+                                        />
+                                    </Field>
+
+                                    <Field
+                                        id="seo_default_description"
+                                        label="Meta description"
+                                        error={errors.seo_default_description}
+                                    >
+                                        <Textarea
+                                            id="seo_default_description"
+                                            name="seo_default_description"
+                                            defaultValue={
+                                                settings.seo_default_description
+                                            }
+                                            required
                                         />
                                     </Field>
                                 </CardContent>

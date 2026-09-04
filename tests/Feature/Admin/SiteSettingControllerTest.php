@@ -39,7 +39,8 @@ test('admin can view stored site settings and defaults', function () {
             ->component('admin/site-settings')
             ->where('settings.company_name', 'ForTrip Indonesia')
             ->where('settings.company_tagline', null)
-            ->has('settings', 11));
+            ->where('settings.about_title', 'Perjalanan yang dirancang dengan sepenuh hati')
+            ->has('settings', 22));
 });
 
 test('admin can update site settings', function () {
@@ -67,6 +68,10 @@ test('admin can update site settings', function () {
         'key' => 'hero_title',
         'value' => 'Jelajahi Indonesia',
     ]);
+    $this->assertDatabaseHas('site_settings', [
+        'key' => 'seo_default_title',
+        'value' => 'ForTrip — Liburan Lebih Mudah',
+    ]);
     $this->assertDatabaseMissing('site_settings', [
         'key' => 'unexpected_key',
     ]);
@@ -82,6 +87,8 @@ test('admin receives validation errors for invalid site settings', function () {
             'company_email' => 'not-an-email',
             'facebook_url' => 'javascript:alert(1)',
             'hero_title' => '',
+            'about_title' => '',
+            'seo_default_description' => '',
         ]));
 
     $response
@@ -90,6 +97,8 @@ test('admin receives validation errors for invalid site settings', function () {
             'company_email',
             'facebook_url',
             'hero_title',
+            'about_title',
+            'seo_default_description',
         ])
         ->assertRedirect(route('admin.site-settings.edit'));
 
@@ -114,5 +123,16 @@ function validSiteSettings(array $overrides = []): array
         'youtube_url' => 'https://youtube.com/@fortrip',
         'hero_title' => 'Jelajahi Indonesia',
         'hero_subtitle' => 'Paket wisata pilihan untuk pengalaman terbaik.',
+        'about_title' => 'Tentang ForTrip',
+        'about_description' => 'Kami menyiapkan perjalanan yang nyaman dan berkesan.',
+        'home_packages_title' => 'Paket Pilihan',
+        'home_packages_subtitle' => 'Temukan destinasi terbaik untuk liburan berikutnya.',
+        'home_testimonials_title' => 'Cerita Pelanggan',
+        'home_testimonials_subtitle' => 'Pengalaman pelanggan bersama ForTrip.',
+        'home_cta_title' => 'Mari Mulai Perjalanan',
+        'home_cta_description' => 'Konsultasikan rencana perjalanan Anda bersama kami.',
+        'home_cta_button_text' => 'Hubungi via WhatsApp',
+        'seo_default_title' => 'ForTrip — Liburan Lebih Mudah',
+        'seo_default_description' => 'Paket wisata pilihan untuk perjalanan berkesan bersama ForTrip.',
     ], $overrides);
 }

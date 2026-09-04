@@ -34,6 +34,17 @@ class UpdateSiteSettingsRequest extends FormRequest
             'youtube_url' => ['nullable', 'url:http,https', 'max:2048'],
             'hero_title' => ['required', 'string', 'max:255'],
             'hero_subtitle' => ['nullable', 'string', 'max:500'],
+            'about_title' => ['required', 'string', 'max:255'],
+            'about_description' => ['required', 'string', 'max:2000'],
+            'home_packages_title' => ['required', 'string', 'max:255'],
+            'home_packages_subtitle' => ['nullable', 'string', 'max:500'],
+            'home_testimonials_title' => ['required', 'string', 'max:255'],
+            'home_testimonials_subtitle' => ['nullable', 'string', 'max:500'],
+            'home_cta_title' => ['required', 'string', 'max:255'],
+            'home_cta_description' => ['nullable', 'string', 'max:500'],
+            'home_cta_button_text' => ['required', 'string', 'max:100'],
+            'seo_default_title' => ['required', 'string', 'max:255'],
+            'seo_default_description' => ['required', 'string', 'max:500'],
         ];
     }
 }
