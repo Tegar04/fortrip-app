@@ -30,6 +30,8 @@ class Booking extends Model
         'status',
     ];
 
+    protected $hidden = ['public_submission_key'];
+
     protected $casts = [
         'departure_date' => 'date',
         'participant_count' => 'integer',

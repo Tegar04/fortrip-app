@@ -12,7 +12,7 @@ import {
     Youtube,
 } from 'lucide-react';
 import { useState, type ReactNode } from 'react';
-import { home } from '@/routes';
+import { about, contact, home } from '@/routes';
 import { index as packageIndex } from '@/routes/packages';
 import type { PublicSite } from '@/types';
 
@@ -23,9 +23,9 @@ type PublicPageProps = {
 const navigation = [
     { label: 'Home', href: home.url() },
     { label: 'Paket Wisata', href: packageIndex.url() },
-    { label: 'Tentang Kami', href: `${home.url()}#about` },
+    { label: 'Tentang Kami', href: about.url() },
     { label: 'Testimoni', href: `${home.url()}#testimonials` },
-    { label: 'Kontak', href: `${home.url()}#contact` },
+    { label: 'Kontak', href: contact.url() },
 ];
 
 export default function PublicLayout({ children }: { children: ReactNode }) {
@@ -83,7 +83,7 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
                                     className="size-4"
                                     aria-hidden="true"
                                 />
-                                Hubungi Kami
+                                Chat WhatsApp
                             </a>
                         )}
                         <button
@@ -176,7 +176,7 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
                     <div className="grid content-start gap-4">
                         <h2 className="font-semibold text-white">Navigasi</h2>
                         <div className="grid gap-3 text-sm">
-                            {navigation.slice(0, 4).map((item) => (
+                            {navigation.map((item) => (
                                 <Link
                                     key={item.href}
                                     href={item.href}

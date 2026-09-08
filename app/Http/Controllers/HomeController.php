@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\GetPublicSeo;
 use App\Actions\GetPublicSiteData;
 use App\Models\Banner;
 use App\Models\Package;
@@ -83,10 +84,10 @@ class HomeController extends Controller
                 'cta_description' => $settings['home_cta_description'],
                 'cta_button_text' => $settings['home_cta_button_text'],
             ],
-            'seo' => [
-                'title' => $settings['seo_default_title'],
-                'description' => $settings['seo_default_description'],
-            ],
+            'seo' => app(GetPublicSeo::class)->handle(
+                $settings['seo_default_title'], $settings['seo_default_description'], 'home',
+                image: $banners->firstWhere('image_url', '!=', '')['image_url'] ?? $featuredPackages->first()['cover_url'] ?? null,
+            ),
             'banners' => $banners,
             'featured_packages' => $featuredPackages,
             'testimonials' => $testimonials,

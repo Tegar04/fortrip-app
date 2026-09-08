@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\GetPublicSeo;
 use App\Actions\GetPublicSiteData;
 use App\Models\Package;
 use Illuminate\Support\Str;
@@ -40,10 +41,12 @@ class PublicPackageController extends Controller
 
         return Inertia::render('public/packages/index', [
             'site' => $site,
-            'seo' => [
-                'title' => 'Paket Wisata — '.$site['company_name'],
-                'description' => 'Temukan paket wisata pilihan untuk perjalanan berkesan bersama '.$site['company_name'].'.',
-            ],
+            'seo' => app(GetPublicSeo::class)->handle(
+                'Paket Wisata — '.$site['company_name'],
+                'Temukan paket wisata pilihan untuk perjalanan berkesan bersama '.$site['company_name'].'.',
+                'packages.index', $packages->currentPage() > 1 ? ['page' => $packages->currentPage()] : [],
+                $packages->items()[0]['cover_url'] ?? null,
+            ),
             'packages' => $packages,
         ]);
     }
@@ -60,11 +63,16 @@ class PublicPackageController extends Controller
 
         return Inertia::render('public/packages/show', [
             'site' => $site,
-            'seo' => [
-                'title' => $package->title.' — '.$site['company_name'],
-                'description' => Str::limit($package->description, 155),
-            ],
+            'seo' => app(GetPublicSeo::class)->handle(
+                $package->title.' — '.$site['company_name'], Str::limit($package->description, 155),
+                'packages.show', ['package' => $package->slug], $package->getFirstMediaUrl('cover', 'hero'),
+            ),
             'package' => $this->packageDetailData($package),
+            'booking' => [
+                'min_departure_date' => today(config('app.timezone'))->toDateString(),
+                'max_participants' => 50,
+                'submission_token' => (string) Str::uuid(),
+            ],
         ]);
     }
 

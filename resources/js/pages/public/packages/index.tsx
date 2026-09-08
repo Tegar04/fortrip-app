@@ -1,4 +1,5 @@
-import { Head, Link } from '@inertiajs/react';
+import SeoHead from '@/components/public/seo-head';
+import { Link } from '@inertiajs/react';
 import { Compass, MessageCircle, Sparkles } from 'lucide-react';
 import PackageCard from '@/components/public/package-card';
 import PublicPagination from '@/components/public/public-pagination';
@@ -17,21 +18,9 @@ type Props = {
 };
 
 export default function PackageIndex({ site, seo, packages }: Props) {
-    const socialImage = packages.data.find(
-        (travelPackage) => travelPackage.cover_url,
-    )?.cover_url;
-
     return (
         <>
-            <Head title={seo.title}>
-                <meta name="description" content={seo.description} />
-                <meta property="og:title" content={seo.title} />
-                <meta property="og:description" content={seo.description} />
-                <meta property="og:type" content="website" />
-                {socialImage && (
-                    <meta property="og:image" content={socialImage} />
-                )}
-            </Head>
+            <SeoHead seo={seo} />
 
             <section className="relative isolate overflow-hidden bg-slate-950 px-5 py-16 text-white sm:px-8 sm:py-20 lg:px-10">
                 <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.28),transparent_40%),radial-gradient(circle_at_bottom_right,rgba(14,165,233,0.2),transparent_35%)]" />

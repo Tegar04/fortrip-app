@@ -177,10 +177,10 @@ Buat Form Request khusus untuk booking publik dengan aturan minimal:
 
 - `name`: wajib, string, panjang maksimum yang wajar.
 - `phone`: wajib, string, format/ukuran nomor telepon yang aman.
-- `email`: opsional, email valid.
+- `email`: wajib, email valid.
 - `address`: opsional, string dengan batas maksimum.
-- `departure_date`: wajib, tanggal hari ini atau setelahnya sesuai aturan bisnis.
-- `participant_count`: wajib, integer, minimum 1 dan maksimum yang ditentukan bisnis.
+- `departure_date`: wajib, tanggal hari ini atau setelahnya berdasarkan `app.timezone`; keberangkatan hari yang sama tetap menunggu konfirmasi admin.
+- `participant_count`: wajib, integer, minimum 1 dan maksimum 50 orang per booking publik.
 
 Aturan proses:
 
@@ -188,9 +188,9 @@ Aturan proses:
 - Abaikan harga, total, status, dan package lain yang dikirim browser.
 - Hitung `total_price` di server dari harga package dikali jumlah peserta.
 - Booking baru selalu berstatus `pending`.
-- Buat atau gunakan customer sesuai strategi identifikasi yang dipilih. Rekomendasi awal: cari berdasarkan nomor telepon yang sudah dinormalisasi, lalu perbarui data kontak yang aman atau buat customer baru.
-- Simpan customer dan booking dalam database transaction.
-- Terapkan rate limiting.
+- Normalisasi nomor telepon. Gunakan customer lama hanya jika nomor, nama, email, dan alamat cocok. Jika kontak berbeda, buat customer terpisah tanpa menimpa data lama; nomor telepon yang belum diverifikasi bukan bukti identitas.
+- Simpan customer dan booking dalam database transaction. Kunci paket saat memeriksa status aktif dan harga; gunakan token pengajuan dengan unique index untuk mencegah duplikasi ketika request dikirim ulang, termasuk setelah sesi berubah.
+- Terapkan rate limiting: maksimum 5 request per menit dan 20 request per jam per IP pada submit booking publik.
 - Tambahkan field honeypot sederhana bila diperlukan tanpa menambah dependency.
 - Setelah berhasil, redirect kembali ke detail package dengan flash toast dan ringkasan bahwa admin akan menghubungi pelanggan.
 - Jangan menampilkan ID internal, invoice, atau data customer lain pada response publik.
@@ -559,22 +559,33 @@ Pekerjaan SEO tambahan:
 
 ### Fase 3 — Booking Publik
 
-- [ ] Tetapkan strategi pencocokan customer.
-- [ ] Buat Form Request booking publik.
-- [ ] Buat controller dan route submit booking.
-- [ ] Terapkan transaction dan kalkulasi total di server.
-- [ ] Terapkan rate limiter.
-- [ ] Buat form React dengan state processing, error, dan success.
-- [ ] Tambahkan pemberitahuan privasi singkat.
-- [ ] Tambahkan feature test booking dan failure modes.
+- [x] Tetapkan strategi pencocokan customer.
+- [x] Buat Form Request booking publik.
+- [x] Buat controller dan route submit booking.
+- [x] Terapkan transaction dan kalkulasi total di server.
+- [x] Terapkan rate limiter.
+- [x] Buat form React dengan state processing, error, dan success.
+- [x] Tambahkan pemberitahuan privasi singkat.
+- [x] Tambahkan feature test booking dan failure modes.
 
 ### Fase 4 — About, Contact, dan SEO Teknis
 
-- [ ] Buat halaman About.
-- [ ] Buat halaman Contact.
-- [ ] Tambahkan canonical, Open Graph, dan metadata konsisten.
-- [ ] Tambahkan sitemap package aktif dan robots configuration.
-- [ ] Tambahkan error pages publik.
+- [x] Buat halaman About.
+- [x] Buat halaman Contact.
+- [x] Tambahkan canonical, Open Graph, dan metadata konsisten.
+- [x] Tambahkan sitemap package aktif dan robots configuration.
+- [x] Tambahkan error pages publik.
+
+Catatan versi awal Fase 4:
+
+- About memakai profil dari Site Settings; Contact memakai kontak yang sama tanpa form pesan atau peta.
+- Tombol Chat WhatsApp tersedia di About, Contact, dan header, dengan nomor dari Site Settings.
+- Canonical dan sitemap memakai `APP_URL`; sesuaikan dengan domain utama saat deployment.
+- `SEO_INDEXABLE` secara default aktif hanya pada production; lingkungan lain mengirim `noindex` dan robots yang membatasi crawling.
+- `SEO_IMAGE_URL` dapat diisi URL absolut gambar brand untuk fallback pratinjau; tanpa gambar, metadata gambar tidak dikirim.
+- Metadata tersedia pada HTML awal meskipun SSR tidak berjalan. Build client/SSR sudah diverifikasi; layanan SSR production tetap perlu dijalankan saat deployment.
+- Halaman error GET memakai tampilan mandiri tanpa Site Settings; respons JSON dan pesan error submit booking tetap mengikuti alur masing-masing.
+- Pemeriksaan visual browser masih perlu dilakukan karena runtime browser gagal dimulai.
 
 ### Fase 5 — Finalisasi
 

@@ -1,4 +1,5 @@
-import { Head } from '@inertiajs/react';
+import SeoHead from '@/components/public/seo-head';
+
 import {
     ArrowRight,
     CheckCircle2,
@@ -37,22 +38,9 @@ export default function Home({
     featured_packages: featuredPackages,
     testimonials,
 }: Props) {
-    const socialImage =
-        banners.find((banner) => banner.image_url)?.image_url ??
-        featuredPackages.find((travelPackage) => travelPackage.cover_url)
-            ?.cover_url;
-
     return (
         <>
-            <Head title={seo.title}>
-                <meta name="description" content={seo.description} />
-                <meta property="og:title" content={seo.title} />
-                <meta property="og:description" content={seo.description} />
-                <meta property="og:type" content="website" />
-                {socialImage && (
-                    <meta property="og:image" content={socialImage} />
-                )}
-            </Head>
+            <SeoHead seo={seo} />
 
             <HeroCarousel
                 banners={banners}

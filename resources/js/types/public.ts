@@ -91,4 +91,8 @@ export type PublicTestimonial = {
 export type SeoMeta = {
     title: string;
     description: string;
+    canonical: string;
+    image: string | null;
+    type: string;
+    robots: string;
 };

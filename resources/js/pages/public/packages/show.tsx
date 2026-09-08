@@ -1,4 +1,5 @@
-import { Head, Link } from '@inertiajs/react';
+import SeoHead from '@/components/public/seo-head';
+import { Link } from '@inertiajs/react';
 import {
     CalendarDays,
     Compass,
@@ -8,6 +9,9 @@ import {
     ShieldCheck,
 } from 'lucide-react';
 import type { ReactNode } from 'react';
+import PublicBookingForm, {
+    type PublicBookingOptions,
+} from '@/pages/public/packages/booking-form';
 import { home } from '@/routes';
 import { index as packageIndex } from '@/routes/packages';
 import type { PublicPackageDetail, PublicSite, SeoMeta } from '@/types';
@@ -22,15 +26,15 @@ type Props = {
     site: PublicSite;
     seo: SeoMeta;
     package: PublicPackageDetail;
+    booking: PublicBookingOptions;
 };
 
 export default function PackageShow({
     site,
     seo,
     package: travelPackage,
+    booking,
 }: Props) {
-    const socialImage =
-        travelPackage.cover_original_url || travelPackage.cover_url;
     const consultationUrl = site.whatsapp_url
         ? `${site.whatsapp_url}${site.whatsapp_url.includes('?') ? '&' : '?'}text=${encodeURIComponent(
               `Halo, saya tertarik dengan ${travelPackage.title}. Bisa berikan informasi lebih lanjut?`,
@@ -39,15 +43,7 @@ export default function PackageShow({
 
     return (
         <>
-            <Head title={seo.title}>
-                <meta name="description" content={seo.description} />
-                <meta property="og:title" content={seo.title} />
-                <meta property="og:description" content={seo.description} />
-                <meta property="og:type" content="product" />
-                {socialImage && (
-                    <meta property="og:image" content={socialImage} />
-                )}
-            </Head>
+            <SeoHead seo={seo} />
 
             <section className="relative isolate overflow-hidden bg-slate-950 text-white">
                 <div className="absolute inset-0 -z-20 bg-slate-950" />
@@ -129,6 +125,13 @@ export default function PackageShow({
                             </p>
                         </article>
 
+                        <PublicBookingForm
+                            key={travelPackage.slug}
+                            slug={travelPackage.slug}
+                            price={travelPackage.price}
+                            options={booking}
+                        />
+
                         {travelPackage.gallery.length > 0 && (
                             <section
                                 className="grid gap-6"
@@ -207,6 +210,12 @@ export default function PackageShow({
                                 </SummaryItem>
                             </div>
 
+                            <a
+                                href="#public-booking"
+                                className="inline-flex items-center justify-center rounded-full bg-emerald-700 px-6 py-3.5 text-sm font-semibold text-white hover:bg-emerald-800 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-300"
+                            >
+                                Ajukan booking
+                            </a>
                             {consultationUrl && (
                                 <a
                                     href={consultationUrl}

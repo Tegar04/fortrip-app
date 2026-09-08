@@ -35,16 +35,23 @@ class GetPublicSiteData
             'company_email' => $settings['company_email'],
             'whatsapp_url' => $this->whatsappUrl($settings['whatsapp_number']),
             'social_urls' => [
-                'facebook' => $settings['facebook_url'],
-                'instagram' => $settings['instagram_url'],
-                'youtube' => $settings['youtube_url'],
+                'facebook' => $this->safeExternalUrl($settings['facebook_url']),
+                'instagram' => $this->safeExternalUrl($settings['instagram_url']),
+                'youtube' => $this->safeExternalUrl($settings['youtube_url']),
             ],
         ];
     }
 
+    private function safeExternalUrl(?string $url): ?string
+    {
+        return $url && filter_var($url, FILTER_VALIDATE_URL)
+            && in_array(strtolower((string) parse_url($url, PHP_URL_SCHEME)), ['http', 'https'], true)
+            ? $url : null;
+    }
+
     private function whatsappUrl(?string $number): ?string
     {
-        if (blank($number)) {
+        if (blank($number) || ! preg_match('/^\+?[0-9 ()-]+$/', $number)) {
             return null;
         }
 
@@ -56,6 +63,10 @@ class GetPublicSiteData
 
         if (Str::startsWith($normalizedNumber, '0')) {
             $normalizedNumber = '62'.Str::after($normalizedNumber, '0');
+        }
+
+        if (! preg_match('/^[1-9][0-9]{7,14}$/', $normalizedNumber)) {
+            return null;
         }
 
         return 'https://wa.me/'.$normalizedNumber;
