@@ -11,6 +11,7 @@ export default function Contact({
     const socialLinks = [
         { label: 'Instagram', url: site.social_urls.instagram },
         { label: 'Facebook', url: site.social_urls.facebook },
+        { label: 'TikTok', url: site.social_urls.tiktok },
         { label: 'YouTube', url: site.social_urls.youtube },
     ].filter((link) => link.url);
     const hasContact =
@@ -46,9 +47,20 @@ export default function Contact({
                                 />
                                 <div className="grid gap-2">
                                     <h3 className="font-semibold">Alamat</h3>
-                                    <p className="leading-7 whitespace-pre-line text-slate-600">
-                                        {site.company_address}
-                                    </p>
+                                    {site.google_maps_url ? (
+                                        <a
+                                            href={site.google_maps_url}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="rounded-sm leading-7 whitespace-pre-line text-emerald-700 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-700"
+                                        >
+                                            {site.company_address}
+                                        </a>
+                                    ) : (
+                                        <p className="leading-7 whitespace-pre-line text-slate-600">
+                                            {site.company_address}
+                                        </p>
+                                    )}
                                 </div>
                             </div>
                         )}

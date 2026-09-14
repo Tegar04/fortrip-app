@@ -9,7 +9,7 @@ Konten website disimpan di database sehingga dapat dikelola melalui dashboard ta
 
 ## Status Proyek
 
-Update terakhir: **3 September 2026**.
+Update terakhir: **14 September 2026**.
 
 | Area | Status | Catatan |
 |---|---|---|
@@ -23,11 +23,11 @@ Update terakhir: **3 September 2026**.
 | Banner CRUD | ✅ Selesai | Upload, toggle aktif, dan pengurutan |
 | Package CRUD | ✅ Selesai | Cover, gallery, slug, status aktif, dan unggulan |
 | Testimonial CRUD | ✅ Selesai | Foto opsional, rating, dan toggle aktif |
-| Customer dan Booking | 🟡 Sebagian selesai | CRUD customer dan manajemen booking admin selesai; form publik menunggu halaman package |
+| Customer dan Booking | ✅ Selesai | Modul admin dan booking publik tanpa login tersedia, aman, dan telah diuji |
 | Invoice, Payment, dan PDF | ✅ Selesai | Invoice, histori pembayaran, status otomatis, dan PDF A4 |
 | Laporan dan Export Excel | ✅ Selesai | Filter periode, statistik, grafik Recharts, tabel detail, dan XLSX |
-| Landing page publik dinamis | ⏳ Belum | — |
-| Finalisasi, SEO, dan deployment | ⏳ Belum | Tahap akhir |
+| Landing page publik dinamis | ✅ Selesai secara fungsional | Home, daftar/detail paket, booking publik, About, Contact, dan SEO teknis tersedia |
+| Finalisasi dan deployment | 🟡 Dalam proses | Audit, QA visual lintas perangkat/browser, dan deployment masih diperlukan |
 
 Dokumentasi progres yang lebih terperinci tersedia di [`readme.progress.md`](readme.progress.md).
 
@@ -73,10 +73,11 @@ resources/js/
 ├── actions/          # action controller hasil Wayfinder
 ├── routes/           # named routes hasil Wayfinder
 ├── components/       # komponen UI bersama
-├── layouts/          # layout aplikasi, auth, dan settings
+├── layouts/          # layout aplikasi, auth, settings, dan publik
 ├── pages/
 │   ├── admin/        # dashboard CMS
 │   ├── auth/         # login, register, dan pemulihan akun
+│   ├── public/       # home, package, booking, About, dan Contact
 │   └── settings/     # profile, security, dan appearance
 └── types/            # tipe TypeScript bersama
 ```
@@ -147,8 +148,8 @@ Setiap route resource juga menggunakan permission sesuai action-nya.
 ### Site Settings
 
 - Mengelola nama perusahaan, deskripsi, alamat, telepon, dan email.
-- Mengelola WhatsApp dan tautan media sosial.
-- Mengelola judul dan subjudul hero.
+- Mengelola WhatsApp, link Google Maps, serta tautan Instagram, Facebook, TikTok, dan YouTube.
+- Mengelola judul footer, konten Home/About, hero, CTA, dan metadata SEO.
 - Hanya dapat diubah oleh admin.
 
 ### Banner
@@ -186,7 +187,18 @@ Setiap route resource juga menggunakan permission sesuai action-nya.
 - Manajemen booking admin: list, create, detail, edit booking pending, hapus, dan ubah status.
 - Total harga dihitung di server berdasarkan harga package × jumlah peserta.
 - Workflow status terbatas: `pending → confirmed → completed`, dengan pembatalan dari `pending` atau `confirmed`.
-- Form booking publik tetap menunggu halaman detail package.
+- Form booking publik tersedia pada halaman detail package tanpa login atau OTP.
+- Booking publik selalu berstatus awal `pending`, dibatasi maksimal 50 peserta, dan tanggal mulai minimal hari ini mengikuti timezone aplikasi.
+- Kalkulasi total, transaction/locking, perlindungan duplikasi lintas sesi, dan rate limiting diterapkan di server.
+
+### Website Publik
+
+- Home dinamis dengan hero carousel, paket unggulan, profil singkat, testimonial, CTA WhatsApp, dan empty state.
+- Daftar package aktif dengan pagination serta halaman detail berdasarkan slug.
+- Halaman About dan Contact memakai konten Site Settings tanpa form pesan.
+- Footer menampilkan judul `about_title`, kontak, serta ikon Instagram, Facebook, TikTok, dan YouTube bila URL tersedia.
+- Alamat di footer dan Contact membuka Google Maps bila `google_maps_url` valid; jika kosong atau tidak valid, alamat tetap tampil sebagai teks.
+- Canonical, Open Graph, Twitter metadata, sitemap package aktif, robots dinamis, dan halaman error publik tersedia.
 
 ### Invoice, Payment, dan PDF
 
@@ -204,6 +216,19 @@ Setiap route resource juga menggunakan permission sesuai action-nya.
 - Granularitas grafik otomatis harian, mingguan, atau bulanan.
 - Tabel detail booking dengan pagination dan tautan ke booking/invoice.
 - Export XLSX dengan format tanggal/Rupiah, freeze header, auto-filter, dan perlindungan formula injection.
+
+## Route Publik yang Sudah Aktif
+
+```text
+GET  /                                 # Home
+GET  /packages                         # Daftar package aktif
+GET  /packages/{package:slug}          # Detail package
+POST /packages/{package:slug}/bookings # Submit booking publik
+GET  /about                            # About
+GET  /contact                          # Contact
+GET  /sitemap.xml                      # Sitemap publik
+GET  /robots.txt                       # Robots sesuai environment
+```
 
 ## Route Admin yang Sudah Aktif
 
@@ -340,10 +365,10 @@ npm run build
 
 Status verifikasi terakhir:
 
-- 135 test dijalankan: 132 lulus dan 3 dilewati;
-- 556 assertion;
+- 213 test dijalankan: 210 lulus dan 3 dilewati;
+- 1.280 assertion;
 - TypeScript, lint file terkait, Pint, dan production build berhasil;
-- PHPStan masih terhambat error bootstrap Larastan `LARAVEL_VERSION` pada environment PHP 8.5.
+- PHPStan terarah untuk file terkait berhasil; analisis penuh tetap perlu diverifikasi pada tahap finalisasi.
 
 ## Roadmap
 
@@ -353,14 +378,15 @@ Banner CRUD                           ✅
 Package CRUD                          ✅
 Testimonial CRUD                      ✅
 Customer + Booking Admin              ✅
-Form Booking Publik                   menunggu halaman detail package
+Form Booking Publik                   ✅
 Invoice + Payment + PDF               ✅
 Laporan + Export Excel + Grafik       ✅
-Landing Page Publik Dinamis
-Polish UI + SEO + Deployment
+Landing Page Publik Dinamis           ✅
+About + Contact + SEO Teknis          ✅
+Audit + QA Visual + Deployment        dalam proses
 ```
 
-Tahap selanjutnya adalah membangun **Landing Page Publik Dinamis** dan menghubungkan form booking publik pada halaman detail package.
+Tahap selanjutnya adalah finalisasi melalui audit accessibility, keamanan, query/N+1, ukuran media, pemeriksaan console, QA visual lintas perangkat/browser, dan deployment production.
 
 ## Production
 
@@ -371,4 +397,4 @@ npm run build
 php artisan optimize
 ```
 
-Pastikan konfigurasi production menggunakan `APP_ENV=production`, `APP_DEBUG=false`, kredensial database yang aman, storage persisten, queue worker bila dibutuhkan, serta web server yang mengarah ke direktori `public`.
+Pastikan konfigurasi production menggunakan `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL` yang sesuai domain utama, `SEO_INDEXABLE=true`, `SEO_IMAGE_URL` bila diperlukan, kredensial database yang aman, storage persisten, queue worker bila dibutuhkan, serta web server yang mengarah ke direktori `public`. Jalankan layanan SSR bila metadata dan rendering server-side digunakan pada deployment.

@@ -6,7 +6,7 @@ Saya adalah seorang owner bisnis Trip & Travel liburan. Saya ingin membuat websi
 
 ---
 
-## Status Progress — Update 3 September 2026
+## Status Progress — Update 14 September 2026
 
 ### Ringkasan Status
 
@@ -29,11 +29,11 @@ Saya adalah seorang owner bisnis Trip & Travel liburan. Saya ingin membuat websi
 | Banner CRUD | ✅ Selesai | CRUD, upload gambar, toggle aktif, dan drag-and-drop reorder tersedia |
 | Package CRUD | ✅ Selesai | CRUD, cover/gallery, slug otomatis, toggle aktif/unggulan, dan test tersedia |
 | Testimonial CRUD | ✅ Selesai | CRUD, foto opsional, rating bintang, toggle aktif, dan test tersedia |
-| Customer & Booking module | 🟡 Sebagian selesai | Modul admin selesai dan halaman detail package tersedia; form booking publik belum dibuat |
+| Customer & Booking module | ✅ Selesai | Modul admin dan booking publik tanpa login tersedia, aman, dan telah diuji |
 | Invoice + Payment + PDF | ✅ Selesai | Generate invoice, histori pembayaran, status otomatis, dan PDF A4 |
 | Laporan + Export Excel | ✅ Selesai | Filter periode, statistik, grafik Recharts, tabel detail, dan export XLSX |
-| Landing page publik dinamis | 🟡 Sebagian selesai | Home serta daftar/detail paket selesai; booking publik, About, Contact, dan QA visual menunggu tahap berikutnya |
-| Polish UI, SEO, deployment | ⏳ Belum | Tahap akhir |
+| Landing page publik dinamis | ✅ Selesai secara fungsional | Home, daftar/detail paket, booking publik, About, Contact, dan SEO teknis tersedia |
+| Finalisasi & deployment | 🟡 Dalam proses | SEO teknis selesai; audit, QA visual lintas perangkat/browser, dan deployment masih diperlukan |
 
 ---
 
@@ -154,7 +154,14 @@ Storage link sudah dibuat: `public/storage` → `storage/app/public`
 Route yang sudah aktif:
 
 ```
-GET  /                      → home (Welcome page)
+GET  /                      → home (landing page publik)
+GET  /packages              → packages.index
+GET  /packages/{package:slug} → packages.show
+POST /packages/{package:slug}/bookings → packages.bookings.store
+GET  /about                 → about
+GET  /contact               → contact
+GET  /sitemap.xml           → sitemap
+GET  /robots.txt            → robots
 GET  /dashboard             → dashboard (auth)
 GET  /login                 → Fortify login
 POST /login
@@ -206,7 +213,7 @@ GET                /admin/reports/export
 
 ---
 
-## Yang Belum Dikerjakan — Roadmap Selanjutnya
+## Roadmap Finalisasi
 
 ### Urutan Pengerjaan yang Disarankan
 
@@ -232,13 +239,13 @@ GET                /admin/reports/export
 ⑦ Laporan + Export Excel + Grafik Recharts ✅
       │
       ▼
+⑧ Landing Page Publik Dinamis ✅
+      │
+      ▼
 POSISI SAAT INI
       │
       ▼
-⑧ Landing Page Publik Dinamis
-      │
-      ▼
-⑨ Polish UI + SEO + Deploy
+⑨ Audit + QA Visual + Deploy
 ```
 
 ---
@@ -306,9 +313,18 @@ Yang sudah dibuat:
 - Halaman React admin untuk customer dan booking, navigasi berbasis permission, serta Wayfinder typed routes
 - Feature test untuk akses admin/staff, validasi, kalkulasi harga, transisi status, dan perlindungan penghapusan
 
-Yang masih perlu dibuat:
-- Form booking publik di halaman detail package (dikerjakan bersama landing page publik dinamis)
-- Notifikasi email saat booking dikonfirmasi (opsional)
+Booking publik yang sudah dibuat:
+- Form booking tersedia pada halaman detail package tanpa login atau OTP
+- Booking baru selalu `pending`; total dihitung dari harga package di server
+- Package dikunci dan diperiksa ulang dalam transaction sebelum booking disimpan
+- Customer lama tidak ditimpa; reuse hanya dilakukan ketika seluruh data kontak cocok
+- Token submission dengan unique index mencegah duplikasi lintas sesi
+- Rate limit 5 request per menit dan 20 request per jam per IP
+- Validasi tanggal memakai `app.timezone`, mengizinkan hari yang sama, dan membatasi 1–50 peserta
+- Feature test mencakup manipulasi harga/status/package, CSRF, rate limit, rollback, serta replay submission
+
+Pengembangan opsional:
+- Notifikasi email saat booking dikonfirmasi
 
 ### ⑥ Invoice + Payment + PDF
 
@@ -358,21 +374,33 @@ Yang sudah dibuat:
 - Halaman React daftar paket dengan grid responsif, pagination, empty state, dan metadata SEO
 - Halaman React detail paket dengan cover hero, deskripsi aman, galeri, CTA WhatsApp, dan metadata SEO
 - Setiap kartu paket terhubung ke halaman detail melalui route Wayfinder
-- Full test suite berhasil: 140 test lolos, 3 dilewati, dan 712 assertion
+- Form booking publik tersedia dengan validasi server, kalkulasi total, proteksi duplikasi, dan rate limiter
+- Halaman About dan Contact memakai Site Settings dan CTA WhatsApp tanpa form pesan
+- Footer menampilkan `about_title`, ikon Instagram/Facebook/TikTok/YouTube, serta alamat yang dapat membuka Google Maps
+- URL media sosial dan Google Maps dinormalisasi/divalidasi sebelum dikirim ke frontend
+- Canonical, Open Graph, Twitter metadata, sitemap package aktif, robots dinamis, dan halaman error publik tersedia
+- Full test suite terbaru berhasil: 210 test lolos, 3 dilewati, dan 1.280 assertion
 
-Yang masih perlu dibuat:
-- Form booking publik pada halaman detail paket
-- Halaman Tentang Kami dan Kontak mandiri
-- SEO teknis lanjutan, error pages, serta QA visual lintas perangkat/browser
+Yang masih perlu diverifikasi:
+- QA visual dan responsivitas lintas perangkat/browser
+- Accessibility dan alur keyboard
+- Tidak ada error console pada alur publik utama
 
 ### ⑨ Finalisasi
 
-- Polish UI & responsive testing
-- Validasi & authorization review menyeluruh
-- Error handling (404, 403, 500)
-- Optimasi query (eager loading, pagination)
-- Build production: `npm run build`
-- Deploy ke server / Laravel Cloud
+Yang sudah selesai:
+- Error handling publik untuk 403, 404, 419, 429, dan 500
+- Build production terbaru: `npm run build`
+- Affected tests, formatter PHP, lint/type check frontend, dan full test suite
+
+Yang masih perlu dilakukan:
+- Polish UI dan responsive testing
+- Audit accessibility serta alur keyboard
+- Audit validasi, authorization, dan keamanan booking secara menyeluruh
+- Audit query/N+1, eager loading, pagination, serta ukuran media
+- QA visual lintas browser dan ukuran layar utama
+- Konfigurasi production (`APP_URL`, `SEO_INDEXABLE`, `SEO_IMAGE_URL`, dan SSR bila digunakan)
+- Ganti kredensial development lalu deploy ke server / Laravel Cloud
 
 ---
 
@@ -386,8 +414,9 @@ Laravel (Backend + Controller)
      ├─ pages/auth/        → halaman login, register, reset password
      ├─ pages/settings/    → profile, security, appearance
      ├─ pages/admin/       → dashboard CMS, customer, booking, invoice, dan laporan
-     ├─ pages/             → welcome, dashboard
-     ├─ layouts/           → auth layout, app layout, settings layout
+     ├─ pages/public/      → home, package, booking, About, dan Contact
+     ├─ pages/             → dashboard dan halaman umum
+     ├─ layouts/           → auth, app, settings, dan public layout
      └─ components/        → komponen UI shared
 ```
 

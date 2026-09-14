@@ -11,7 +11,7 @@ import {
     X,
     Youtube,
 } from 'lucide-react';
-import { useState, type ReactNode } from 'react';
+import { useState, type ComponentPropsWithoutRef, type ReactNode } from 'react';
 import { about, contact, home } from '@/routes';
 import { index as packageIndex } from '@/routes/packages';
 import type { PublicSite } from '@/types';
@@ -146,6 +146,15 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
                                 {site.company_name}
                             </span>
                         </div>
+                        <h2 className="text-sm font-semibold text-white">
+                            <Link
+                                href={about()}
+                                prefetch
+                                className="rounded-md transition hover:text-emerald-400 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-400"
+                            >
+                                {site.about_title}
+                            </Link>
+                        </h2>
                         {site.company_tagline && (
                             <p className="max-w-sm text-sm leading-7 text-slate-400">
                                 {site.company_tagline}
@@ -163,6 +172,12 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
                                 label="Facebook"
                             >
                                 <Facebook aria-hidden="true" />
+                            </SocialLink>
+                            <SocialLink
+                                href={site.social_urls.tiktok}
+                                label="TikTok"
+                            >
+                                <TikTokIcon aria-hidden="true" />
                             </SocialLink>
                             <SocialLink
                                 href={site.social_urls.youtube}
@@ -196,7 +211,18 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
                         <div className="grid gap-4 text-sm">
                             {site.company_address && (
                                 <ContactItem icon={MapPin}>
-                                    {site.company_address}
+                                    {site.google_maps_url ? (
+                                        <a
+                                            href={site.google_maps_url}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="rounded-sm leading-6 whitespace-pre-line transition hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-400"
+                                        >
+                                            {site.company_address}
+                                        </a>
+                                    ) : (
+                                        site.company_address
+                                    )}
                                 </ContactItem>
                             )}
                             {site.company_phone && (
@@ -268,6 +294,14 @@ function SocialLink({
         >
             {children}
         </a>
+    );
+}
+
+function TikTokIcon(props: ComponentPropsWithoutRef<'svg'>) {
+    return (
+        <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+            <path d="M14.5 3c.3 2.5 1.7 4 4.5 4.2v3.1a8.4 8.4 0 0 1-4.5-1.4v6.2a6.1 6.1 0 1 1-5.3-6V12a3 3 0 1 0 2.2 2.9V3h3.1Z" />
+        </svg>
     );
 }
 

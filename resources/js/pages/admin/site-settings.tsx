@@ -21,11 +21,13 @@ type SiteSettingsForm = {
     company_name: string;
     company_tagline: string | null;
     company_address: string | null;
+    google_maps_url: string | null;
     company_phone: string | null;
     company_email: string | null;
     whatsapp_number: string | null;
     facebook_url: string | null;
     instagram_url: string | null;
+    tiktok_url: string | null;
     youtube_url: string | null;
     hero_title: string;
     hero_subtitle: string | null;
@@ -157,6 +159,23 @@ export default function SiteSettings({ settings }: Props) {
                                             name="company_address"
                                             defaultValue={
                                                 settings.company_address ?? ''
+                                            }
+                                        />
+                                    </Field>
+
+                                    <Field
+                                        id="google_maps_url"
+                                        label="Link Google Maps"
+                                        error={errors.google_maps_url}
+                                        className="md:col-span-2"
+                                    >
+                                        <Input
+                                            id="google_maps_url"
+                                            name="google_maps_url"
+                                            type="url"
+                                            placeholder="https://maps.app.goo.gl/..."
+                                            defaultValue={
+                                                settings.google_maps_url ?? ''
                                             }
                                         />
                                     </Field>
@@ -420,7 +439,7 @@ export default function SiteSettings({ settings }: Props) {
                                         atau https://.
                                     </CardDescription>
                                 </CardHeader>
-                                <CardContent className="grid gap-5 md:grid-cols-3">
+                                <CardContent className="grid gap-5 md:grid-cols-2">
                                     <Field
                                         id="facebook_url"
                                         label="Facebook"
@@ -447,6 +466,21 @@ export default function SiteSettings({ settings }: Props) {
                                             type="url"
                                             defaultValue={
                                                 settings.instagram_url ?? ''
+                                            }
+                                        />
+                                    </Field>
+
+                                    <Field
+                                        id="tiktok_url"
+                                        label="TikTok"
+                                        error={errors.tiktok_url}
+                                    >
+                                        <Input
+                                            id="tiktok_url"
+                                            name="tiktok_url"
+                                            type="url"
+                                            defaultValue={
+                                                settings.tiktok_url ?? ''
                                             }
                                         />
                                     </Field>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Rules\GoogleMapsUrl;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -26,11 +27,13 @@ class UpdateSiteSettingsRequest extends FormRequest
             'company_name' => ['required', 'string', 'max:255'],
             'company_tagline' => ['nullable', 'string', 'max:255'],
             'company_address' => ['nullable', 'string', 'max:2000'],
+            'google_maps_url' => ['nullable', 'url:http,https', 'max:2048', new GoogleMapsUrl],
             'company_phone' => ['nullable', 'string', 'max:30'],
             'company_email' => ['nullable', 'email', 'max:255'],
             'whatsapp_number' => ['nullable', 'string', 'max:30'],
             'facebook_url' => ['nullable', 'url:http,https', 'max:2048'],
             'instagram_url' => ['nullable', 'url:http,https', 'max:2048'],
+            'tiktok_url' => ['nullable', 'url:http,https', 'max:2048'],
             'youtube_url' => ['nullable', 'url:http,https', 'max:2048'],
             'hero_title' => ['required', 'string', 'max:255'],
             'hero_subtitle' => ['nullable', 'string', 'max:500'],

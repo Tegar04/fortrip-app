@@ -3,6 +3,7 @@
 namespace App\Actions;
 
 use App\Models\SiteSetting;
+use App\Rules\GoogleMapsUrl;
 use Illuminate\Support\Str;
 
 class GetPublicSiteData
@@ -11,14 +12,17 @@ class GetPublicSiteData
      * @param  array<string, string|null>|null  $settings
      * @return array{
      *     company_name: string,
+     *     about_title: string,
      *     company_tagline: string|null,
      *     company_address: string|null,
+     *     google_maps_url: string|null,
      *     company_phone: string|null,
      *     company_email: string|null,
      *     whatsapp_url: string|null,
      *     social_urls: array{
      *         facebook: string|null,
      *         instagram: string|null,
+     *         tiktok: string|null,
      *         youtube: string|null
      *     }
      * }
@@ -29,14 +33,19 @@ class GetPublicSiteData
 
         return [
             'company_name' => $settings['company_name'],
+            'about_title' => $settings['about_title'],
             'company_tagline' => $settings['company_tagline'],
             'company_address' => $settings['company_address'],
+            'google_maps_url' => GoogleMapsUrl::isValid($settings['google_maps_url'])
+                ? $settings['google_maps_url']
+                : null,
             'company_phone' => $settings['company_phone'],
             'company_email' => $settings['company_email'],
             'whatsapp_url' => $this->whatsappUrl($settings['whatsapp_number']),
             'social_urls' => [
                 'facebook' => $this->safeExternalUrl($settings['facebook_url']),
                 'instagram' => $this->safeExternalUrl($settings['instagram_url']),
+                'tiktok' => $this->safeExternalUrl($settings['tiktok_url']),
                 'youtube' => $this->safeExternalUrl($settings['youtube_url']),
             ],
         ];

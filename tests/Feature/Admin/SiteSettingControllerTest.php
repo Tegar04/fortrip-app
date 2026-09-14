@@ -40,7 +40,9 @@ test('admin can view stored site settings and defaults', function () {
             ->where('settings.company_name', 'ForTrip Indonesia')
             ->where('settings.company_tagline', null)
             ->where('settings.about_title', 'Perjalanan yang dirancang dengan sepenuh hati')
-            ->has('settings', 22));
+            ->where('settings.tiktok_url', null)
+            ->where('settings.google_maps_url', null)
+            ->has('settings', 24));
 });
 
 test('admin can update site settings', function () {
@@ -72,6 +74,14 @@ test('admin can update site settings', function () {
         'key' => 'seo_default_title',
         'value' => 'ForTrip — Liburan Lebih Mudah',
     ]);
+    $this->assertDatabaseHas('site_settings', [
+        'key' => 'tiktok_url',
+        'value' => 'https://www.tiktok.com/@fortrip',
+    ]);
+    $this->assertDatabaseHas('site_settings', [
+        'key' => 'google_maps_url',
+        'value' => 'https://maps.app.goo.gl/ForTripLocation',
+    ]);
     $this->assertDatabaseMissing('site_settings', [
         'key' => 'unexpected_key',
     ]);
@@ -85,7 +95,9 @@ test('admin receives validation errors for invalid site settings', function () {
         ->put(route('admin.site-settings.update'), validSiteSettings([
             'company_name' => '',
             'company_email' => 'not-an-email',
+            'google_maps_url' => 'https://example.com/location',
             'facebook_url' => 'javascript:alert(1)',
+            'tiktok_url' => 'javascript:alert(1)',
             'hero_title' => '',
             'about_title' => '',
             'seo_default_description' => '',
@@ -95,7 +107,9 @@ test('admin receives validation errors for invalid site settings', function () {
         ->assertSessionHasErrors([
             'company_name',
             'company_email',
+            'google_maps_url',
             'facebook_url',
+            'tiktok_url',
             'hero_title',
             'about_title',
             'seo_default_description',
@@ -115,11 +129,13 @@ function validSiteSettings(array $overrides = []): array
         'company_name' => 'ForTrip',
         'company_tagline' => 'Teman perjalanan Anda',
         'company_address' => 'Jakarta, Indonesia',
+        'google_maps_url' => 'https://maps.app.goo.gl/ForTripLocation',
         'company_phone' => '0211234567',
         'company_email' => 'hello@fortrip.test',
         'whatsapp_number' => '6281234567890',
         'facebook_url' => 'https://facebook.com/fortrip',
         'instagram_url' => 'https://instagram.com/fortrip',
+        'tiktok_url' => 'https://www.tiktok.com/@fortrip',
         'youtube_url' => 'https://youtube.com/@fortrip',
         'hero_title' => 'Jelajahi Indonesia',
         'hero_subtitle' => 'Paket wisata pilihan untuk pengalaman terbaik.',

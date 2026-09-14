@@ -17,34 +17,36 @@ Dokumen ini menjadi checklist implementasi. Pengerjaan sebaiknya dilakukan secar
 
 ## 2. Kondisi Proyek Saat Ini
 
-Fondasi yang sudah dapat digunakan:
+Landing page publik sudah selesai secara fungsional:
 
-- Laravel, Inertia v3, React 19, Tailwind CSS v4, dan Wayfinder sudah aktif.
-- CRUD admin untuk `site_settings`, banner, package, dan testimonial sudah tersedia.
-- Media banner, cover/gallery package, serta foto testimonial sudah dikelola melalui Spatie Media Library.
-- Modul customer dan booking admin sudah tersedia.
-- Route `/` masih menggunakan closure dan merender halaman starter `welcome`.
-- Belum ada layout khusus halaman publik.
-- Resolver layout di `resources/js/app.tsx` saat ini akan memberikan `AppLayout` kepada halaman baru secara default. Halaman publik harus dipetakan ke `PublicLayout` agar tidak memakai shell dashboard.
+- Laravel, Inertia v3, React 19, Tailwind CSS v4, dan Wayfinder aktif.
+- Route `/` memakai `HomeController` dan seluruh halaman publik menggunakan `PublicLayout`.
+- Home, daftar package, detail package, About, dan Contact tersedia tanpa login.
+- Form booking publik tersedia pada detail package dengan kalkulasi server, status awal `pending`, transaction/locking, proteksi duplikasi lintas sesi, dan rate limiting.
+- Konten Home, profil About, kontak, media sosial, judul footer, serta link Google Maps dikelola melalui Site Settings.
+- Data publik hanya menampilkan record aktif dan hanya mengirim field yang diperlukan frontend.
+- SEO teknis mencakup canonical, Open Graph, Twitter metadata, sitemap package aktif, robots dinamis, dan halaman error publik.
+- Full test suite terbaru lulus: 210 passed, 3 skipped, 1.280 assertions.
 
-Gap konten yang perlu diselesaikan:
+Pekerjaan yang masih terbuka berada pada tahap finalisasi:
 
-- `site_settings` belum memiliki konten Tentang Kami.
-- Belum tersedia judul/deskripsi SEO yang dapat dikelola admin.
-- Belum ada pengaturan label CTA dan teks section Home.
-- Belum diputuskan apakah halaman Kontak hanya menampilkan kontak/WhatsApp atau menerima pesan melalui form.
+- QA visual dan responsivitas lintas perangkat/browser.
+- Audit accessibility serta alur keyboard.
+- Audit query/N+1, ukuran media, dan keamanan menyeluruh.
+- Pemeriksaan error console pada alur publik utama.
+- Konfigurasi production dan deployment.
 
-Keputusan untuk rilis awal:
+Keputusan rilis awal tetap berlaku:
 
-- Halaman Kontak cukup menampilkan informasi kontak dan CTA WhatsApp. Form pesan dapat menjadi pengembangan terpisah karena membutuhkan penyimpanan pesan, validasi, anti-spam, dan/atau pengiriman email.
-- Registrasi akun tidak perlu dipromosikan di navigasi publik. Login dapat ditampilkan sebagai akses admin bila memang diperlukan.
-- Data publik hanya boleh menampilkan record yang aktif.
+- Halaman Contact menampilkan informasi kontak, link Google Maps, media sosial, dan CTA WhatsApp tanpa form pesan.
+- Registrasi akun tidak dipromosikan di navigasi publik.
+- Data publik hanya menampilkan record yang aktif.
 
 ---
 
 ## 3. Sitemap dan Route Publik
 
-Route yang ditargetkan:
+Route yang sudah aktif:
 
 | Method | URL | Nama route | Halaman/Tindakan |
 |---|---|---|---|
@@ -62,7 +64,7 @@ Ketentuan route:
 - Package nonaktif tidak boleh diakses dari halaman daftar maupun detail publik.
 - Route booking harus memiliki rate limiter.
 - Frontend harus menggunakan fungsi Wayfinder dari `@/routes` atau `@/actions`, bukan URL internal yang ditulis manual.
-- URL eksternal seperti WhatsApp dan media sosial harus dinormalisasi dan divalidasi sebelum digunakan.
+- URL eksternal seperti WhatsApp, media sosial, dan Google Maps harus dinormalisasi serta divalidasi sebelum digunakan.
 
 ---
 
@@ -70,22 +72,27 @@ Ketentuan route:
 
 ### 4.1 Site settings yang sudah tersedia
 
+Identitas dan kontak:
+
 - `company_name`
 - `company_tagline`
 - `company_address`
+- `google_maps_url`
 - `company_phone`
 - `company_email`
 - `whatsapp_number`
+
+Media sosial:
+
 - `facebook_url`
 - `instagram_url`
+- `tiktok_url`
 - `youtube_url`
+
+Konten Home dan About:
+
 - `hero_title`
 - `hero_subtitle`
-
-### 4.2 Site settings yang disarankan untuk ditambahkan
-
-Karena tabel bersifat key-value, penambahan konten berikut tidak memerlukan kolom baru. Namun whitelist validasi, nilai default, form admin, dan test Site Settings harus diperbarui.
-
 - `about_title`
 - `about_description`
 - `home_packages_title`
@@ -95,10 +102,13 @@ Karena tabel bersifat key-value, penambahan konten berikut tidak memerlukan kolo
 - `home_cta_title`
 - `home_cta_description`
 - `home_cta_button_text`
+
+SEO:
+
 - `seo_default_title`
 - `seo_default_description`
 
-Nilai default harus tetap tersedia agar halaman publik tidak rusak ketika admin belum mengisi suatu setting.
+Semua key tersebut telah memiliki whitelist validasi, nilai default, form admin, dan test. Karena tabel bersifat key-value, penambahannya tidak memerlukan kolom baru. URL Google Maps dibatasi ke domain resmi Google Maps; nilai kosong atau tidak valid tidak dijadikan link publik.
 
 ### 4.3 Aturan data Home
 
@@ -378,12 +388,13 @@ Ketentuan description:
 
 ### Kontak
 
-- Alamat.
+- Alamat tetap ditampilkan sebagai teks dan menjadi link ke Google Maps ketika `google_maps_url` valid.
+- Link Google Maps dibuka pada tab baru; tanpa URL valid, alamat tetap berupa teks biasa.
 - Nomor telepon.
 - Email.
 - WhatsApp.
-- Media sosial.
-- Peta hanya ditambahkan jika tersedia URL/embed yang dikelola admin dan kebijakan privasi/performa sudah dipertimbangkan.
+- Media sosial, termasuk TikTok.
+- Embed peta belum digunakan agar halaman tetap ringan dan tidak langsung memuat layanan pihak ketiga.
 - Jangan tampilkan elemen kosong untuk setting yang belum diisi.
 
 ---
@@ -575,11 +586,16 @@ Pekerjaan SEO tambahan:
 - [x] Tambahkan canonical, Open Graph, dan metadata konsisten.
 - [x] Tambahkan sitemap package aktif dan robots configuration.
 - [x] Tambahkan error pages publik.
+- [x] Tampilkan `about_title` dinamis pada footer.
+- [x] Tambahkan TikTok ke Site Settings, footer, dan halaman Contact.
+- [x] Jadikan alamat di footer dan Contact sebagai link Google Maps opsional.
 
 Catatan versi awal Fase 4:
 
-- About memakai profil dari Site Settings; Contact memakai kontak yang sama tanpa form pesan atau peta.
+- About memakai profil dari Site Settings; Contact memakai kontak yang sama tanpa form pesan atau embed peta.
 - Tombol Chat WhatsApp tersedia di About, Contact, dan header, dengan nomor dari Site Settings.
+- Footer memakai `about_title` dari Site Settings dan menampilkan ikon Instagram, Facebook, TikTok, serta YouTube bila URL tersedia.
+- Alamat footer dan Contact membuka Google Maps bila `google_maps_url` valid; fallback tetap berupa teks biasa.
 - Canonical dan sitemap memakai `APP_URL`; sesuaikan dengan domain utama saat deployment.
 - `SEO_INDEXABLE` secara default aktif hanya pada production; lingkungan lain mengirim `noindex` dan robots yang membatasi crawling.
 - `SEO_IMAGE_URL` dapat diisi URL absolut gambar brand untuk fallback pratinjau; tanpa gambar, metadata gambar tidak dikirim.
@@ -595,11 +611,11 @@ Catatan versi awal Fase 4:
 - [ ] Audit keamanan booking.
 - [ ] Uji browser dan ukuran layar utama.
 - [x] Jalankan affected tests.
-- [x] Jalankan test suite lengkap: 140 passed, 3 skipped, 712 assertions.
+- [x] Jalankan test suite lengkap terbaru: 210 passed, 3 skipped, 1.280 assertions.
 - [x] Jalankan formatter PHP untuk file PHP yang berubah.
 - [x] Jalankan lint/type check frontend.
 - [x] Jalankan `npm run build`.
-- [x] Perbarui `readme.progress.md` setelah milestone selesai.
+- [x] Sinkronkan `readme.progress.md` dan `detail.home.md` setelah milestone terbaru.
 
 ---
 
@@ -616,6 +632,7 @@ app/Http/Controllers/ContactController.php
 app/Http/Requests/StorePublicBookingRequest.php
 app/Http/Controllers/Admin/SiteSettingController.php
 app/Http/Requests/Admin/UpdateSiteSettingsRequest.php
+app/Rules/GoogleMapsUrl.php
 routes/web.php
 resources/js/app.tsx
 resources/js/layouts/public-layout.tsx
@@ -659,11 +676,13 @@ Landing page publik dianggap selesai ketika:
 - Affected tests, lint/type check, dan production build berhasil.
 - Empty state, validation state, rate-limit state, dan 404 state telah diuji.
 
+Status saat ini: kriteria fungsional dan automated verification sudah terpenuhi. Kriteria visual, accessibility, pemeriksaan console, audit query/media, dan deployment masih menunggu finalisasi.
+
 ---
 
-## 20. Milestone Pertama yang Harus Dikerjakan
+## 20. Milestone Pertama yang Telah Diselesaikan
 
-Fokus pertama adalah menyelesaikan Home sebagai vertical slice:
+Home telah diselesaikan sebagai vertical slice pertama melalui langkah berikut:
 
 1. Perluas site settings untuk konten Home dan SEO.
 2. Buat `PublicLayout` dan mapping layout publik.
@@ -673,4 +692,4 @@ Fokus pertama adalah menyelesaikan Home sebagai vertical slice:
 6. Tambahkan feature test Home.
 7. Verifikasi tampilan mobile/desktop dan jalankan production build.
 
-Setelah milestone ini stabil, lanjutkan ke daftar package, detail package, lalu booking publik. Urutan ini mengurangi pekerjaan ulang karena layout, pola data, card, navigasi, formatter harga, media, dan metadata sudah tervalidasi terlebih dahulu di Home.
+Setelah milestone Home stabil, implementasi telah dilanjutkan ke daftar package, detail package, booking publik, About, Contact, dan SEO teknis. Pola layout, data, card, navigasi, formatter harga, media, dan metadata kini digunakan konsisten pada halaman publik.

@@ -26,16 +26,19 @@ test('about displays managed company content and a direct WhatsApp link', functi
 });
 
 test('contact exposes only public contact data', function () {
-    foreach (['company_address' => 'Jl. Merdeka 1', 'company_email' => 'hello@example.com', 'company_phone' => '081234567890', 'whatsapp_number' => '081234567890', 'instagram_url' => 'https://instagram.com/fortrip'] as $key => $value) {
+    foreach (['about_title' => 'Perjalanan nyaman bersama kami', 'company_address' => 'Jl. Merdeka 1', 'google_maps_url' => 'https://www.google.com/maps/place/Fortrip', 'company_email' => 'hello@example.com', 'company_phone' => '081234567890', 'whatsapp_number' => '081234567890', 'instagram_url' => 'https://instagram.com/fortrip', 'tiktok_url' => 'https://www.tiktok.com/@fortrip'] as $key => $value) {
         SiteSetting::factory()->create(compact('key', 'value'));
     }
     SiteSetting::factory()->create(['key' => 'internal_secret', 'value' => 'private']);
 
     $this->get(route('contact'))->assertInertia(fn (Assert $page) => $page
         ->component('public/contact')->where('site.company_address', 'Jl. Merdeka 1')
+        ->where('site.google_maps_url', 'https://www.google.com/maps/place/Fortrip')
         ->where('site.company_email', 'hello@example.com')
+        ->where('site.about_title', 'Perjalanan nyaman bersama kami')
         ->where('site.whatsapp_url', 'https://wa.me/6281234567890')
         ->where('site.social_urls.instagram', 'https://instagram.com/fortrip')
+        ->where('site.social_urls.tiktok', 'https://www.tiktok.com/@fortrip')
         ->missing('site.internal_secret')->missing('customers'));
 });
 
@@ -47,9 +50,14 @@ test('public information pages work before settings are saved', function (string
 test('missing or unsafe contact links are omitted', function (mixed $number) {
     SiteSetting::factory()->create(['key' => 'whatsapp_number', 'value' => $number]);
     SiteSetting::factory()->create(['key' => 'instagram_url', 'value' => 'javascript:alert(1)']);
+    SiteSetting::factory()->create(['key' => 'tiktok_url', 'value' => 'javascript:alert(1)']);
+    SiteSetting::factory()->create(['key' => 'google_maps_url', 'value' => 'https://example.com/location']);
 
     $this->get(route('contact'))->assertInertia(fn (Assert $page) => $page
-        ->where('site.whatsapp_url', null)->where('site.social_urls.instagram', null));
+        ->where('site.whatsapp_url', null)
+        ->where('site.social_urls.instagram', null)
+        ->where('site.social_urls.tiktok', null)
+        ->where('site.google_maps_url', null));
 })->with([null, '', 'invalid12345678', '123', '1234567890123456']);
 
 test('initial HTML includes escaped canonical and social metadata without SSR', function () {

@@ -1,13 +1,16 @@
 export type PublicSite = {
     company_name: string;
+    about_title: string;
     company_tagline: string | null;
     company_address: string | null;
+    google_maps_url: string | null;
     company_phone: string | null;
     company_email: string | null;
     whatsapp_url: string | null;
     social_urls: {
         facebook: string | null;
         instagram: string | null;
+        tiktok: string | null;
         youtube: string | null;
     };
 };
