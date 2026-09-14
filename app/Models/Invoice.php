@@ -22,14 +22,11 @@ class Invoice extends Model
         'status',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'amount' => 'decimal:2',
-            'issued_date' => 'date',
-            'due_date' => 'date',
-        ];
-    }
+    protected $casts = [
+        'amount' => 'decimal:2',
+        'issued_date' => 'date',
+        'due_date' => 'date',
+    ];
 
     /** @return BelongsTo<Booking, $this> */
     public function booking(): BelongsTo

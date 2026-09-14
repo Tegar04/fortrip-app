@@ -9,8 +9,6 @@ use Carbon\CarbonInterface;
 
 class BuildBookingReportChartData
 {
-    private const STATUSES = ['pending', 'confirmed', 'completed', 'cancelled'];
-
     /**
      * @return array{
      *     granularity: 'day'|'week'|'month',
@@ -32,21 +30,23 @@ class BuildBookingReportChartData
         $granularity = $this->granularity($start, $end);
         $points = $this->emptyPoints($start, $end, $granularity);
 
-        Booking::query()
+        $bookings = Booking::query()
             ->whereBetween('created_at', [$start, $end])
             ->select(['id', 'status', 'created_at'])
             ->orderBy('id')
-            ->lazy()
-            ->each(function (Booking $booking) use (&$points, $start, $granularity): void {
-                if (! in_array($booking->status, self::STATUSES, true)) {
-                    return;
-                }
+            ->lazy();
 
-                $key = $this->bucketKey($booking->created_at->toImmutable(), $start, $granularity);
-                $points[$key][$booking->status]++;
-            });
+        foreach ($bookings as $booking) {
+            $key = $this->bucketKey($booking->created_at->toImmutable(), $start, $granularity);
 
-        Payment::query()
+            if (! isset($points[$key])) {
+                continue;
+            }
+
+            $points[$key][$booking->status]++;
+        }
+
+        $payments = Payment::query()
             ->join('invoices', 'invoices.id', '=', 'payments.invoice_id')
             ->join('bookings', 'bookings.id', '=', 'invoices.booking_id')
             ->where('payments.status', 'paid')
@@ -57,12 +57,18 @@ class BuildBookingReportChartData
                 'bookings.created_at as booking_created_at',
             ])
             ->orderBy('payments.id')
-            ->lazy()
-            ->each(function (Payment $payment) use (&$points, $start, $granularity): void {
-                $bookingCreatedAt = CarbonImmutable::parse($payment->getAttribute('booking_created_at'));
-                $key = $this->bucketKey($bookingCreatedAt, $start, $granularity);
-                $points[$key]['revenue'] += (float) $payment->amount;
-            });
+            ->lazy();
+
+        foreach ($payments as $payment) {
+            $bookingCreatedAt = CarbonImmutable::parse($payment->getAttribute('booking_created_at'));
+            $key = $this->bucketKey($bookingCreatedAt, $start, $granularity);
+
+            if (! isset($points[$key])) {
+                continue;
+            }
+
+            $points[$key]['revenue'] += (float) $payment->amount;
+        }
 
         return [
             'granularity' => $granularity,

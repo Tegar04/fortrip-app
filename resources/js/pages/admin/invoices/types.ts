@@ -6,7 +6,7 @@ export type InvoiceData = {
     remaining_amount: string;
     issued_date: string;
     due_date: string | null;
-    status: "unpaid" | "paid" | "overdue";
+    status: 'unpaid' | 'paid' | 'overdue';
     booking: {
         id: number;
         departure_date: string;

@@ -23,13 +23,13 @@ return new class extends Migration
                 'cash',
                 'bank_transfer',
                 'ewallet',
-                'payment_gateway'
+                'payment_gateway',
             ])->default('bank_transfer');
 
             $table->enum('status', [
                 'pending',
                 'paid',
-                'failed'
+                'failed',
             ])->default('pending');
 
             $table->timestamp('paid_at')->nullable();

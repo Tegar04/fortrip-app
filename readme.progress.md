@@ -10,30 +10,30 @@ Saya adalah seorang owner bisnis Trip & Travel liburan. Saya ingin membuat websi
 
 ### Ringkasan Status
 
-| Area | Status | Catatan |
-|---|---|---|
-| Setup project Laravel + React/Inertia | ✅ Selesai | Project berjalan, Artisan/Tinker aktif |
-| Konfigurasi database MySQL | ✅ Selesai | Migration berjalan, koneksi aktif |
-| Migration tabel inti | ✅ Selesai | 8 tabel inti + tabel permission & media |
-| Model Eloquent | ✅ Selesai | 8 model inti tersedia |
-| Relationship Eloquent | ✅ Selesai | Customer → Booking → Package → Invoice → Payment |
-| Factory & Seeder | ✅ Selesai | Data dummy berhasil di-seed |
-| Role & Permission (Spatie) | ✅ Selesai | Role admin & staff, 28 & 15 permissions |
-| User admin & staff | ✅ Selesai | admin@travel.com & staff@travel.com |
-| Middleware route admin | ✅ Selesai | `auth + role:admin\|staff` |
-| Spatie Media Library | ✅ Selesai | Banner, Package, Testimonial dikonfigurasi |
-| Wayfinder (typed routes) | ✅ Selesai | Actions & routes TypeScript ter-generate |
-| Route publik & auth | ✅ Selesai | `/`, `/login`, `/register`, `/dashboard`, settings |
-| Development & production build | ✅ Selesai | Vite dev server dan `npm run build` berjalan tanpa error |
-| Site Settings CRUD | ✅ Selesai | Edit/update, permission admin, validasi, UI React, dan test tersedia |
-| Banner CRUD | ✅ Selesai | CRUD, upload gambar, toggle aktif, dan drag-and-drop reorder tersedia |
-| Package CRUD | ✅ Selesai | CRUD, cover/gallery, slug otomatis, toggle aktif/unggulan, dan test tersedia |
-| Testimonial CRUD | ✅ Selesai | CRUD, foto opsional, rating bintang, toggle aktif, dan test tersedia |
-| Customer & Booking module | ✅ Selesai | Modul admin dan booking publik tanpa login tersedia, aman, dan telah diuji |
-| Invoice + Payment + PDF | ✅ Selesai | Generate invoice, histori pembayaran, status otomatis, dan PDF A4 |
-| Laporan + Export Excel | ✅ Selesai | Filter periode, statistik, grafik Recharts, tabel detail, dan export XLSX |
-| Landing page publik dinamis | ✅ Selesai secara fungsional | Home, daftar/detail paket, booking publik, About, Contact, dan SEO teknis tersedia |
-| Finalisasi & deployment | 🟡 Dalam proses | SEO teknis selesai; audit, QA visual lintas perangkat/browser, dan deployment masih diperlukan |
+| Area                                  | Status                       | Catatan                                                                                        |
+| ------------------------------------- | ---------------------------- | ---------------------------------------------------------------------------------------------- |
+| Setup project Laravel + React/Inertia | ✅ Selesai                   | Project berjalan, Artisan/Tinker aktif                                                         |
+| Konfigurasi database MySQL            | ✅ Selesai                   | Migration berjalan, koneksi aktif                                                              |
+| Migration tabel inti                  | ✅ Selesai                   | 8 tabel inti + tabel permission & media                                                        |
+| Model Eloquent                        | ✅ Selesai                   | 8 model inti tersedia                                                                          |
+| Relationship Eloquent                 | ✅ Selesai                   | Customer → Booking → Package → Invoice → Payment                                               |
+| Factory & Seeder                      | ✅ Selesai                   | Data dummy berhasil di-seed                                                                    |
+| Role & Permission (Spatie)            | ✅ Selesai                   | Role admin & staff, 28 & 15 permissions                                                        |
+| User admin & staff                    | ✅ Selesai                   | admin@travel.com & staff@travel.com                                                            |
+| Middleware route admin                | ✅ Selesai                   | `auth + role:admin\|staff`                                                                     |
+| Spatie Media Library                  | ✅ Selesai                   | Banner, Package, Testimonial dikonfigurasi                                                     |
+| Wayfinder (typed routes)              | ✅ Selesai                   | Actions & routes TypeScript ter-generate                                                       |
+| Route publik & auth                   | ✅ Selesai                   | `/`, `/login`, `/register`, `/dashboard`, settings                                             |
+| Development & production build        | ✅ Selesai                   | Vite dev server dan `npm run build` berjalan tanpa error                                       |
+| Site Settings CRUD                    | ✅ Selesai                   | Edit/update, permission admin, validasi, UI React, dan test tersedia                           |
+| Banner CRUD                           | ✅ Selesai                   | CRUD, upload gambar, toggle aktif, dan drag-and-drop reorder tersedia                          |
+| Package CRUD                          | ✅ Selesai                   | CRUD, cover/gallery, slug otomatis, toggle aktif/unggulan, dan test tersedia                   |
+| Testimonial CRUD                      | ✅ Selesai                   | CRUD, foto opsional, rating bintang, toggle aktif, dan test tersedia                           |
+| Customer & Booking module             | ✅ Selesai                   | Modul admin dan booking publik tanpa login tersedia, aman, dan telah diuji                     |
+| Invoice + Payment + PDF               | ✅ Selesai                   | Generate invoice, histori pembayaran, status otomatis, dan PDF A4                              |
+| Laporan + Export Excel                | ✅ Selesai                   | Filter periode, statistik, grafik Recharts, tabel detail, dan export XLSX                      |
+| Landing page publik dinamis           | ✅ Selesai secara fungsional | Home, daftar/detail paket, booking publik, About, Contact, dan SEO teknis tersedia             |
+| Finalisasi & deployment               | 🟡 Dalam proses              | SEO teknis selesai; audit, QA visual lintas perangkat/browser, dan deployment masih diperlukan |
 
 ---
 
@@ -98,11 +98,13 @@ Payment   belongsTo Invoice
 Dua role sudah dibuat dan di-seed:
 
 **admin** — 28 permissions (akses penuh):
+
 - manage site settings
 - view/create/edit/delete: banners, packages, testimonials, customers, bookings, invoices
 - download invoices, view/export reports
 
 **staff** — 15 permissions (akses operasional):
+
 - view banners, packages, testimonials
 - view/create/edit: customers, bookings, invoices
 - download invoices, view/export reports
@@ -110,8 +112,8 @@ Dua role sudah dibuat dan di-seed:
 
 User yang sudah dibuat via `RoleAndPermissionSeeder`:
 
-| Email | Password | Role |
-|---|---|---|
+| Email            | Password | Role  |
+| ---------------- | -------- | ----- |
 | admin@travel.com | password | admin |
 | staff@travel.com | password | staff |
 
@@ -129,12 +131,12 @@ Semua route admin dilindungi dengan `middleware(['auth', 'role:admin|staff'])`.
 
 Tiga model sudah dikonfigurasi dengan media collections dan konversi otomatis:
 
-| Model | Collection | Type | Konversi |
-|---|---|---|---|
-| Banner | `image` | single file | `thumb` — 400×225 px |
-| Package | `cover` | single file | `thumb` — 600×400 px, `hero` — 1200×675 px |
-| Package | `gallery` | multiple files | `thumb` — 600×400 px |
-| Testimonial | `photo` | single file | `avatar` — 120×120 px |
+| Model       | Collection | Type           | Konversi                                   |
+| ----------- | ---------- | -------------- | ------------------------------------------ |
+| Banner      | `image`    | single file    | `thumb` — 400×225 px                       |
+| Package     | `cover`    | single file    | `thumb` — 600×400 px, `hero` — 1200×675 px |
+| Package     | `gallery`  | multiple files | `thumb` — 600×400 px                       |
+| Testimonial | `photo`    | single file    | `avatar` — 120×120 px                      |
 
 Cara upload di controller nanti:
 
@@ -255,6 +257,7 @@ POSISI SAAT INI
 Halaman admin untuk mengelola pengaturan situs secara key-value sudah selesai.
 
 Yang sudah dibuat:
+
 - `SiteSettingController` dengan action `edit` dan `update`
 - Route `GET/PUT /admin/site-settings` dengan permission `manage site settings`
 - Form Request untuk authorization dan validasi whitelist field
@@ -267,6 +270,7 @@ Yang sudah dibuat:
 Kelola slide hero homepage sudah selesai.
 
 Yang sudah dibuat:
+
 - `BannerController` resource untuk index, create, store, edit, update, dan destroy
 - Route resource `/admin/banners` dengan permission per action
 - Upload dan replacement gambar melalui Spatie Media Library collection `image`
@@ -279,6 +283,7 @@ Yang sudah dibuat:
 Kelola paket wisata sudah selesai.
 
 Yang sudah dibuat:
+
 - `PackageController` resource untuk index, create, store, edit, update, dan destroy
 - Route resource `/admin/packages` dengan permission per action
 - Upload/replacement cover dan multiple gallery melalui Spatie Media Library
@@ -294,6 +299,7 @@ Yang sudah dibuat:
 Kelola testimoni pelanggan sudah selesai.
 
 Yang sudah dibuat:
+
 - `TestimonialController` resource untuk index, create, store, edit, update, dan destroy
 - Route resource `/admin/testimonials` dengan permission per action
 - Upload foto opsional dan replacement melalui Spatie Media Library collection `photo`
@@ -305,6 +311,7 @@ Yang sudah dibuat:
 ### ⑤ Customer & Booking Module
 
 Yang sudah dibuat:
+
 - `CustomerController` dengan CRUD data pelanggan dan proteksi customer yang sudah mempunyai booking
 - `BookingController` dengan list, create, detail, edit booking pending, hapus, dan ubah status
 - Form Request dengan authorization berbasis permission serta validasi tanggal keberangkatan dan jumlah peserta
@@ -314,6 +321,7 @@ Yang sudah dibuat:
 - Feature test untuk akses admin/staff, validasi, kalkulasi harga, transisi status, dan perlindungan penghapusan
 
 Booking publik yang sudah dibuat:
+
 - Form booking tersedia pada halaman detail package tanpa login atau OTP
 - Booking baru selalu `pending`; total dihitung dari harga package di server
 - Package dikunci dan diperiksa ulang dalam transaction sebelum booking disimpan
@@ -324,6 +332,7 @@ Booking publik yang sudah dibuat:
 - Feature test mencakup manipulasi harga/status/package, CSRF, rate limit, rollback, serta replay submission
 
 Pengembangan opsional:
+
 - Notifikasi email saat booking dikonfirmasi
 
 ### ⑥ Invoice + Payment + PDF
@@ -331,6 +340,7 @@ Pengembangan opsional:
 Fitur invoice, pembayaran, dan PDF sudah selesai.
 
 Yang sudah dibuat:
+
 - `InvoiceController` untuk daftar, membuat, melihat, menghapus, dan mengunduh invoice
 - Nomor invoice otomatis dengan format `INV-YYYYMMDD-XXXX`
 - `PaymentController` untuk mencatat dan menghapus histori pembayaran
@@ -347,6 +357,7 @@ Yang sudah dibuat:
 Fitur laporan dan export Excel sudah selesai.
 
 Yang sudah dibuat:
+
 - `ReportController` untuk halaman ringkasan dan download laporan
 - Filter tanggal mulai dan selesai dengan default bulan berjalan
 - Statistik total booking, nilai booking non-cancelled, total revenue pembayaran `paid`, dan booking per status
@@ -362,6 +373,7 @@ Yang sudah dibuat:
 Semua konten diambil dari database (dikelola admin via CMS).
 
 Yang sudah dibuat:
+
 - `HomeController` publik dengan site settings, banner aktif, paket unggulan aktif, dan testimoni aktif
 - `PublicLayout` dengan navbar responsif, mobile navigation, footer, kontak, media sosial, dan CTA WhatsApp
 - Home dinamis dengan hero carousel, fallback hero, Tentang Kami, paket unggulan, testimoni, CTA, dan empty state
@@ -382,6 +394,7 @@ Yang sudah dibuat:
 - Full test suite terbaru berhasil: 210 test lolos, 3 dilewati, dan 1.280 assertion
 
 Yang masih perlu diverifikasi:
+
 - QA visual dan responsivitas lintas perangkat/browser
 - Accessibility dan alur keyboard
 - Tidak ada error console pada alur publik utama
@@ -389,11 +402,13 @@ Yang masih perlu diverifikasi:
 ### ⑨ Finalisasi
 
 Yang sudah selesai:
+
 - Error handling publik untuk 403, 404, 419, 429, dan 500
 - Build production terbaru: `npm run build`
 - Affected tests, formatter PHP, lint/type check frontend, dan full test suite
 
 Yang masih perlu dilakukan:
+
 - Polish UI dan responsive testing
 - Audit accessibility serta alur keyboard
 - Audit validasi, authorization, dan keamanan booking secara menyeluruh
@@ -424,28 +439,28 @@ Laravel (Backend + Controller)
 
 ## Package yang Digunakan
 
-| Package | Versi | Fungsi |
-|---|---|---|
-| laravel/framework | 13.29 | Backend utama |
-| inertiajs/inertia-laravel | 3.3.1 | Jembatan Laravel-React |
-| @inertiajs/react | 3.7.0 | Inertia client React |
-| laravel/fortify | 1.39 | Autentikasi (login, register, 2FA) |
-| spatie/laravel-permission | 8.3.0 | Role & permission |
-| spatie/laravel-medialibrary | 11.23.5 | Upload & manajemen file/gambar |
-| spatie/laravel-sluggable | 4.0.3 | Slug otomatis untuk paket wisata |
-| barryvdh/laravel-dompdf | 3.1.2 | Generate PDF invoice |
-| maatwebsite/excel | 4.0.2 | Export laporan ke Excel |
-| react | 19.2.8 | Frontend UI |
-| recharts | 3.10.1 | Grafik laporan booking dan revenue |
-| tailwindcss | 4.3.3 | Styling |
-| laravel/wayfinder | 0.1.21 | TypeScript typed routes |
+| Package                     | Versi   | Fungsi                             |
+| --------------------------- | ------- | ---------------------------------- |
+| laravel/framework           | 13.29   | Backend utama                      |
+| inertiajs/inertia-laravel   | 3.3.1   | Jembatan Laravel-React             |
+| @inertiajs/react            | 3.7.0   | Inertia client React               |
+| laravel/fortify             | 1.39    | Autentikasi (login, register, 2FA) |
+| spatie/laravel-permission   | 8.3.0   | Role & permission                  |
+| spatie/laravel-medialibrary | 11.23.5 | Upload & manajemen file/gambar     |
+| spatie/laravel-sluggable    | 4.0.3   | Slug otomatis untuk paket wisata   |
+| barryvdh/laravel-dompdf     | 3.1.2   | Generate PDF invoice               |
+| maatwebsite/excel           | 4.0.2   | Export laporan ke Excel            |
+| react                       | 19.2.8  | Frontend UI                        |
+| recharts                    | 3.10.1  | Grafik laporan booking dan revenue |
+| tailwindcss                 | 4.3.3   | Styling                            |
+| laravel/wayfinder           | 0.1.21  | TypeScript typed routes            |
 
 ---
 
 ## Kredensial Development
 
-| Akses | Email | Password |
-|---|---|---|
+| Akses | Email            | Password |
+| ----- | ---------------- | -------- |
 | Admin | admin@travel.com | password |
 | Staff | staff@travel.com | password |
 

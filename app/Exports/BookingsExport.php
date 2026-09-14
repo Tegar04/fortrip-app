@@ -72,8 +72,9 @@ class BookingsExport implements FromQuery, WithColumnFormatting, WithColumnWidth
     {
         /** @var Booking $booking */
         $booking = $row;
-        $paidAmount = (float) ($booking->invoice?->paidAmount() ?? 0);
-        $invoiceAmount = (float) ($booking->invoice?->amount ?? 0);
+        $invoice = $booking->invoice;
+        $paidAmount = $invoice === null ? 0.0 : (float) $invoice->paidAmount();
+        $invoiceAmount = $invoice === null ? 0.0 : (float) $invoice->amount;
 
         return [
             $booking->id,
@@ -86,8 +87,8 @@ class BookingsExport implements FromQuery, WithColumnFormatting, WithColumnWidth
             $booking->participant_count,
             $this->bookingStatusLabel($booking->status),
             (float) $booking->total_price,
-            $booking->invoice?->invoice_number,
-            $booking->invoice ? $this->invoiceStatusLabel($booking->invoice->calculatedStatus()) : null,
+            $invoice?->invoice_number,
+            $invoice ? $this->invoiceStatusLabel($invoice->calculatedStatus()) : null,
             $paidAmount,
             max(0, $invoiceAmount - $paidAmount),
         ];

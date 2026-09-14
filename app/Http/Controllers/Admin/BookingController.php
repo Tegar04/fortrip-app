@@ -37,7 +37,7 @@ class BookingController extends Controller
     public function store(StoreBookingRequest $request): RedirectResponse
     {
         $validated = $request->validated();
-        $package = Package::query()->findOrFail($validated['package_id']);
+        $package = Package::query()->findOrFail($request->integer('package_id'));
 
         Booking::query()->create([
             ...$validated,
@@ -81,7 +81,7 @@ class BookingController extends Controller
         }
 
         $validated = $request->validated();
-        $package = Package::query()->findOrFail($validated['package_id']);
+        $package = Package::query()->findOrFail($request->integer('package_id'));
 
         $booking->update([
             ...$validated,

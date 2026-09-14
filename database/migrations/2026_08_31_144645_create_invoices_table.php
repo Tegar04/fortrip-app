@@ -27,7 +27,7 @@ return new class extends Migration
             $table->enum('status', [
                 'unpaid',
                 'paid',
-                'overdue'
+                'overdue',
             ])->default('unpaid');
 
             $table->timestamps();

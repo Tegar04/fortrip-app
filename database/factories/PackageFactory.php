@@ -6,6 +6,7 @@ use App\Models\Package;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
+/** @extends Factory<Package> */
 class PackageFactory extends Factory
 {
     protected $model = Package::class;
@@ -23,7 +24,7 @@ class PackageFactory extends Factory
         return [
             'title' => $title,
 
-            'slug' => Str::slug($title) . '-' .
+            'slug' => Str::slug($title).'-'.
                 $this->faker->unique()->numberBetween(1, 9999),
 
             'description' => $this->faker->paragraph(),

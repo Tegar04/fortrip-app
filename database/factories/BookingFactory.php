@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\Package;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/** @extends Factory<Booking> */
 class BookingFactory extends Factory
 {
     protected $model = Booking::class;

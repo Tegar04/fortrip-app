@@ -48,14 +48,14 @@ Keputusan rilis awal tetap berlaku:
 
 Route yang sudah aktif:
 
-| Method | URL | Nama route | Halaman/Tindakan |
-|---|---|---|---|
-| GET | `/` | `home` | Home |
-| GET | `/packages` | `packages.index` | Daftar paket aktif |
-| GET | `/packages/{package:slug}` | `packages.show` | Detail paket berdasarkan slug |
-| POST | `/packages/{package:slug}/bookings` | `packages.bookings.store` | Membuat booking publik |
-| GET | `/about` | `about` | Tentang Kami |
-| GET | `/contact` | `contact` | Kontak |
+| Method | URL                                 | Nama route                | Halaman/Tindakan              |
+| ------ | ----------------------------------- | ------------------------- | ----------------------------- |
+| GET    | `/`                                 | `home`                    | Home                          |
+| GET    | `/packages`                         | `packages.index`          | Daftar paket aktif            |
+| GET    | `/packages/{package:slug}`          | `packages.show`           | Detail paket berdasarkan slug |
+| POST   | `/packages/{package:slug}/bookings` | `packages.bookings.store` | Membuat booking publik        |
+| GET    | `/about`                            | `about`                   | Tentang Kami                  |
+| GET    | `/contact`                          | `contact`                 | Kontak                        |
 
 Ketentuan route:
 
@@ -158,17 +158,17 @@ Semua key tersebut telah memiliki whitelist validasi, nilai default, form admin,
 Controller yang disarankan:
 
 - `HomeController`
-  - Mengambil site settings, banner aktif, paket unggulan aktif, dan testimoni aktif.
-  - Merender `public/home`.
+    - Mengambil site settings, banner aktif, paket unggulan aktif, dan testimoni aktif.
+    - Merender `public/home`.
 - `PublicPackageController`
-  - `index()` menampilkan daftar paket aktif dengan pagination.
-  - `show()` menampilkan detail package aktif, cover, gallery, dan data yang diperlukan form booking.
+    - `index()` menampilkan daftar paket aktif dengan pagination.
+    - `show()` menampilkan detail package aktif, cover, gallery, dan data yang diperlukan form booking.
 - `AboutController`
-  - Menampilkan konten Tentang Kami dari site settings.
+    - Menampilkan konten Tentang Kami dari site settings.
 - `ContactController`
-  - Menampilkan alamat, telepon, email, WhatsApp, dan media sosial.
+    - Menampilkan alamat, telepon, email, WhatsApp, dan media sosial.
 - `PublicBookingController`
-  - Menangani booking dari pengunjung.
+    - Menangani booking dari pengunjung.
 
 Nama controller dapat disesuaikan dengan konvensi proyek, tetapi controller publik harus dipisahkan dengan jelas dari controller admin.
 

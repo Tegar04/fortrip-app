@@ -6,6 +6,7 @@ use App\Models\Booking;
 use App\Models\Invoice;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/** @extends Factory<Invoice> */
 class InvoiceFactory extends Factory
 {
     protected $model = Invoice::class;

@@ -1,19 +1,28 @@
-import { Head, Link } from "@inertiajs/react";
-import { Banknote, CalendarRange, Download, ListChecks, WalletCards } from "lucide-react";
-import { download } from "@/actions/App/Http/Controllers/Admin/ReportController";
-import Heading from "@/components/heading";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { formatCurrency } from "@/pages/admin/bookings/booking-form";
-import { formatDate, StatusBadge } from "@/pages/admin/bookings/index";
-import { InvoiceStatusBadge } from "@/pages/admin/invoices/index";
-import { ReportCharts, type ReportChartData } from "@/pages/admin/reports/report-charts";
-import { show as showBooking } from "@/routes/admin/bookings";
-import { show as showInvoice } from "@/routes/admin/invoices";
-import { index } from "@/routes/admin/reports";
+import { Head, Link } from '@inertiajs/react';
+import {
+    Banknote,
+    CalendarRange,
+    Download,
+    ListChecks,
+    WalletCards,
+} from 'lucide-react';
+import { download } from '@/actions/App/Http/Controllers/Admin/ReportController';
+import Heading from '@/components/heading';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { formatCurrency } from '@/pages/admin/bookings/booking-form';
+import { formatDate, StatusBadge } from '@/pages/admin/bookings/index';
+import { InvoiceStatusBadge } from '@/pages/admin/invoices/index';
+import {
+    ReportCharts,
+    type ReportChartData,
+} from '@/pages/admin/reports/report-charts';
+import { show as showBooking } from '@/routes/admin/bookings';
+import { show as showInvoice } from '@/routes/admin/invoices';
+import { index } from '@/routes/admin/reports';
 
 type ReportFilters = {
     start_date: string;
@@ -24,7 +33,10 @@ type ReportStatistics = {
     total_bookings: number;
     total_booking_value: number;
     total_revenue: number;
-    status_counts: Record<"pending" | "confirmed" | "cancelled" | "completed", number>;
+    status_counts: Record<
+        'pending' | 'confirmed' | 'cancelled' | 'completed',
+        number
+    >;
 };
 
 type ReportBooking = {
@@ -39,7 +51,7 @@ type ReportBooking = {
     invoice: {
         id: number;
         invoice_number: string;
-        status: "unpaid" | "paid" | "overdue";
+        status: 'unpaid' | 'paid' | 'overdue';
         paid_amount: string;
         remaining_amount: string;
     } | null;
@@ -57,17 +69,17 @@ type PaginatedBookings = {
 };
 
 const statusLabels = {
-    pending: "Pending",
-    confirmed: "Dikonfirmasi",
-    completed: "Selesai",
-    cancelled: "Dibatalkan",
+    pending: 'Pending',
+    confirmed: 'Dikonfirmasi',
+    completed: 'Selesai',
+    cancelled: 'Dibatalkan',
 };
 
 const statusColors = {
-    pending: "bg-amber-500",
-    confirmed: "bg-blue-500",
-    completed: "bg-emerald-500",
-    cancelled: "bg-red-500",
+    pending: 'bg-amber-500',
+    confirmed: 'bg-blue-500',
+    completed: 'bg-emerald-500',
+    cancelled: 'bg-red-500',
 };
 
 export default function ReportsIndex({
@@ -114,7 +126,9 @@ export default function ReportsIndex({
                             className="grid gap-4 sm:grid-cols-[1fr_1fr_auto] sm:items-end"
                         >
                             <div className="grid gap-2">
-                                <Label htmlFor="start_date">Tanggal mulai</Label>
+                                <Label htmlFor="start_date">
+                                    Tanggal mulai
+                                </Label>
                                 <Input
                                     id="start_date"
                                     name="start_date"
@@ -124,7 +138,9 @@ export default function ReportsIndex({
                                 />
                             </div>
                             <div className="grid gap-2">
-                                <Label htmlFor="end_date">Tanggal selesai</Label>
+                                <Label htmlFor="end_date">
+                                    Tanggal selesai
+                                </Label>
                                 <Input
                                     id="end_date"
                                     name="end_date"
@@ -146,7 +162,9 @@ export default function ReportsIndex({
                 <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
                     <StatisticCard
                         title="Total booking"
-                        value={statistics.total_bookings.toLocaleString("id-ID")}
+                        value={statistics.total_bookings.toLocaleString(
+                            'id-ID',
+                        )}
                         description="Semua status dalam periode"
                         icon={ListChecks}
                     />
@@ -169,30 +187,34 @@ export default function ReportsIndex({
                         <CardTitle>Booking per status</CardTitle>
                     </CardHeader>
                     <CardContent className="grid gap-4 md:grid-cols-2">
-                        {(Object.keys(statusLabels) as Array<keyof typeof statusLabels>).map(
-                            (status) => {
-                                const count = statistics.status_counts[status];
-                                const percentage =
-                                    statistics.total_bookings === 0
-                                        ? 0
-                                        : (count / statistics.total_bookings) * 100;
+                        {(
+                            Object.keys(statusLabels) as Array<
+                                keyof typeof statusLabels
+                            >
+                        ).map((status) => {
+                            const count = statistics.status_counts[status];
+                            const percentage =
+                                statistics.total_bookings === 0
+                                    ? 0
+                                    : (count / statistics.total_bookings) * 100;
 
-                                return (
-                                    <div key={status} className="grid gap-2">
-                                        <div className="flex items-center justify-between gap-4 text-sm">
-                                            <span>{statusLabels[status]}</span>
-                                            <span className="font-semibold">{count}</span>
-                                        </div>
-                                        <div className="bg-muted h-2 overflow-hidden rounded-full">
-                                            <div
-                                                className={`h-full rounded-full ${statusColors[status]}`}
-                                                style={{ width: `${percentage}%` }}
-                                            />
-                                        </div>
+                            return (
+                                <div key={status} className="grid gap-2">
+                                    <div className="flex items-center justify-between gap-4 text-sm">
+                                        <span>{statusLabels[status]}</span>
+                                        <span className="font-semibold">
+                                            {count}
+                                        </span>
                                     </div>
-                                );
-                            },
-                        )}
+                                    <div className="bg-muted h-2 overflow-hidden rounded-full">
+                                        <div
+                                            className={`h-full rounded-full ${statusColors[status]}`}
+                                            style={{ width: `${percentage}%` }}
+                                        />
+                                    </div>
+                                </div>
+                            );
+                        })}
                     </CardContent>
                 </Card>
 
@@ -206,10 +228,12 @@ export default function ReportsIndex({
                     <CardContent>
                         {bookings.data.length === 0 ? (
                             <div className="py-10 text-center">
-                                <p className="font-medium">Tidak ada data pada periode ini.</p>
+                                <p className="font-medium">
+                                    Tidak ada data pada periode ini.
+                                </p>
                                 <p className="text-muted-foreground text-sm">
-                                    Ubah tanggal mulai atau tanggal selesai untuk melihat periode
-                                    lain.
+                                    Ubah tanggal mulai atau tanggal selesai
+                                    untuk melihat periode lain.
                                 </p>
                             </div>
                         ) : (
@@ -218,58 +242,95 @@ export default function ReportsIndex({
                                     <table className="w-full min-w-[1050px] text-sm">
                                         <thead className="bg-muted/70 text-left">
                                             <tr>
-                                                <th className="px-4 py-3 font-medium">Booking</th>
-                                                <th className="px-4 py-3 font-medium">Customer</th>
-                                                <th className="px-4 py-3 font-medium">Package</th>
+                                                <th className="px-4 py-3 font-medium">
+                                                    Booking
+                                                </th>
+                                                <th className="px-4 py-3 font-medium">
+                                                    Customer
+                                                </th>
+                                                <th className="px-4 py-3 font-medium">
+                                                    Package
+                                                </th>
                                                 <th className="px-4 py-3 font-medium">
                                                     Keberangkatan
                                                 </th>
-                                                <th className="px-4 py-3 font-medium">Status</th>
+                                                <th className="px-4 py-3 font-medium">
+                                                    Status
+                                                </th>
                                                 <th className="px-4 py-3 text-right font-medium">
                                                     Total
                                                 </th>
-                                                <th className="px-4 py-3 font-medium">Invoice</th>
+                                                <th className="px-4 py-3 font-medium">
+                                                    Invoice
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody className="divide-y">
                                             {bookings.data.map((booking) => (
-                                                <tr key={booking.id} className="hover:bg-muted/40">
+                                                <tr
+                                                    key={booking.id}
+                                                    className="hover:bg-muted/40"
+                                                >
                                                     <td className="px-4 py-3">
                                                         <Link
-                                                            href={showBooking(booking.id)}
+                                                            href={showBooking(
+                                                                booking.id,
+                                                            )}
                                                             className="font-medium underline-offset-4 hover:underline"
                                                         >
                                                             #{booking.id}
                                                         </Link>
                                                         <p className="text-muted-foreground text-xs">
-                                                            {formatDate(booking.booked_at)}
+                                                            {formatDate(
+                                                                booking.booked_at,
+                                                            )}
                                                         </p>
                                                     </td>
                                                     <td className="px-4 py-3">
                                                         <p className="font-medium">
-                                                            {booking.customer.name}
+                                                            {
+                                                                booking.customer
+                                                                    .name
+                                                            }
                                                         </p>
                                                         <p className="text-muted-foreground text-xs">
-                                                            {booking.customer.phone}
+                                                            {
+                                                                booking.customer
+                                                                    .phone
+                                                            }
                                                         </p>
                                                     </td>
                                                     <td className="px-4 py-3">
                                                         <p className="font-medium">
-                                                            {booking.package.title}
+                                                            {
+                                                                booking.package
+                                                                    .title
+                                                            }
                                                         </p>
                                                         <p className="text-muted-foreground text-xs">
-                                                            {booking.package.destination}
+                                                            {
+                                                                booking.package
+                                                                    .destination
+                                                            }
                                                         </p>
                                                     </td>
                                                     <td className="px-4 py-3">
-                                                        {formatDate(booking.departure_date)}
+                                                        {formatDate(
+                                                            booking.departure_date,
+                                                        )}
                                                     </td>
                                                     <td className="px-4 py-3">
-                                                        <StatusBadge status={booking.status} />
+                                                        <StatusBadge
+                                                            status={
+                                                                booking.status
+                                                            }
+                                                        />
                                                     </td>
                                                     <td className="px-4 py-3 text-right font-semibold">
                                                         {formatCurrency(
-                                                            Number(booking.total_price),
+                                                            Number(
+                                                                booking.total_price,
+                                                            ),
                                                         )}
                                                     </td>
                                                     <td className="px-4 py-3">
@@ -277,14 +338,24 @@ export default function ReportsIndex({
                                                             <div className="grid justify-items-start gap-1">
                                                                 <Link
                                                                     href={showInvoice(
-                                                                        booking.invoice.id,
+                                                                        booking
+                                                                            .invoice
+                                                                            .id,
                                                                     )}
                                                                     className="font-medium underline-offset-4 hover:underline"
                                                                 >
-                                                                    {booking.invoice.invoice_number}
+                                                                    {
+                                                                        booking
+                                                                            .invoice
+                                                                            .invoice_number
+                                                                    }
                                                                 </Link>
                                                                 <InvoiceStatusBadge
-                                                                    status={booking.invoice.status}
+                                                                    status={
+                                                                        booking
+                                                                            .invoice
+                                                                            .status
+                                                                    }
                                                                 />
                                                             </div>
                                                         ) : (
@@ -301,29 +372,53 @@ export default function ReportsIndex({
 
                                 <div className="flex flex-col justify-between gap-3 pt-4 text-sm sm:flex-row sm:items-center">
                                     <p className="text-muted-foreground">
-                                        Menampilkan {bookings.from}-{bookings.to} dari{" "}
-                                        {bookings.total} data
+                                        Menampilkan {bookings.from}-
+                                        {bookings.to} dari {bookings.total} data
                                     </p>
                                     <div className="flex gap-2">
                                         {bookings.prev_page_url ? (
-                                            <Button variant="outline" size="sm" asChild>
-                                                <Link href={bookings.prev_page_url}>
+                                            <Button
+                                                variant="outline"
+                                                size="sm"
+                                                asChild
+                                            >
+                                                <Link
+                                                    href={
+                                                        bookings.prev_page_url
+                                                    }
+                                                >
                                                     Sebelumnya
                                                 </Link>
                                             </Button>
                                         ) : (
-                                            <Button variant="outline" size="sm" disabled>
+                                            <Button
+                                                variant="outline"
+                                                size="sm"
+                                                disabled
+                                            >
                                                 Sebelumnya
                                             </Button>
                                         )}
                                         {bookings.next_page_url ? (
-                                            <Button variant="outline" size="sm" asChild>
-                                                <Link href={bookings.next_page_url}>
+                                            <Button
+                                                variant="outline"
+                                                size="sm"
+                                                asChild
+                                            >
+                                                <Link
+                                                    href={
+                                                        bookings.next_page_url
+                                                    }
+                                                >
                                                     Selanjutnya
                                                 </Link>
                                             </Button>
                                         ) : (
-                                            <Button variant="outline" size="sm" disabled>
+                                            <Button
+                                                variant="outline"
+                                                size="sm"
+                                                disabled
+                                            >
                                                 Selanjutnya
                                             </Button>
                                         )}
@@ -354,8 +449,12 @@ function StatisticCard({
             <CardContent className="flex items-start justify-between gap-4">
                 <div>
                     <p className="text-muted-foreground text-sm">{title}</p>
-                    <p className="mt-1 text-2xl font-semibold tracking-tight">{value}</p>
-                    <p className="text-muted-foreground mt-1 text-xs">{description}</p>
+                    <p className="mt-1 text-2xl font-semibold tracking-tight">
+                        {value}
+                    </p>
+                    <p className="text-muted-foreground mt-1 text-xs">
+                        {description}
+                    </p>
                 </div>
                 <div className="bg-primary/10 text-primary rounded-lg p-2.5">
                     <Icon className="size-5" />
@@ -366,5 +465,5 @@ function StatisticCard({
 }
 
 ReportsIndex.layout = {
-    breadcrumbs: [{ title: "Laporan", href: index() }],
+    breadcrumbs: [{ title: 'Laporan', href: index() }],
 };

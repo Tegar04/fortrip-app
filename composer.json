@@ -73,7 +73,7 @@
             "@test"
         ],
         "types:check": [
-            "phpstan analyse"
+            "phpstan analyse --autoload-file=vendor/larastan/larastan/bootstrap.php"
         ],
         "test": [
             "@php artisan config:clear --ansi",

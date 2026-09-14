@@ -59,7 +59,7 @@ class Booking extends Model
     /** @return list<string> */
     public function availableStatusTransitions(): array
     {
-        return self::STATUS_TRANSITIONS[$this->status] ?? [];
+        return self::STATUS_TRANSITIONS[$this->status];
     }
 
     public function canTransitionTo(string $status): bool

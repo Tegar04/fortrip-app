@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreInvoiceRequest;
 use App\Models\Booking;
 use App\Models\Invoice;
+use App\Models\Payment;
 use App\Models\SiteSetting;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
@@ -175,7 +176,7 @@ class InvoiceController extends Controller
                 ],
             ],
             'payments' => $invoice->relationLoaded('payments')
-                ? $invoice->payments->map(fn ($payment): array => [
+                ? $invoice->payments->map(fn (Payment $payment): array => [
                     'id' => $payment->id,
                     'payment_reference' => $payment->payment_reference,
                     'amount' => $payment->amount,

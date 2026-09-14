@@ -22,13 +22,10 @@ class Payment extends Model
         'notes',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'amount' => 'decimal:2',
-            'paid_at' => 'datetime',
-        ];
-    }
+    protected $casts = [
+        'amount' => 'decimal:2',
+        'paid_at' => 'datetime',
+    ];
 
     /** @return BelongsTo<Invoice, $this> */
     public function invoice(): BelongsTo

@@ -9,8 +9,8 @@ import {
     Tooltip,
     XAxis,
     YAxis,
-} from "recharts";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+} from 'recharts';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export type ReportChartPoint = {
     start_date: string;
@@ -23,34 +23,34 @@ export type ReportChartPoint = {
 };
 
 export type ReportChartData = {
-    granularity: "day" | "week" | "month";
+    granularity: 'day' | 'week' | 'month';
     points: ReportChartPoint[];
 };
 
 const chartColors = {
-    pending: "#f59e0b",
-    confirmed: "#3b82f6",
-    completed: "#10b981",
-    cancelled: "#ef4444",
-    revenue: "#0d9488",
+    pending: '#f59e0b',
+    confirmed: '#3b82f6',
+    completed: '#10b981',
+    cancelled: '#ef4444',
+    revenue: '#0d9488',
 };
 
-const currency = new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
+const currency = new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
     maximumFractionDigits: 0,
 });
 
-const compactNumber = new Intl.NumberFormat("id-ID", {
-    notation: "compact",
+const compactNumber = new Intl.NumberFormat('id-ID', {
+    notation: 'compact',
     maximumFractionDigits: 1,
 });
 
 const tooltipStyle = {
-    backgroundColor: "var(--card)",
-    border: "1px solid var(--border)",
-    borderRadius: "0.5rem",
-    color: "var(--card-foreground)",
+    backgroundColor: 'var(--card)',
+    border: '1px solid var(--border)',
+    borderRadius: '0.5rem',
+    color: 'var(--card-foreground)',
 };
 
 export function ReportCharts({ charts }: { charts: ReportChartData }) {
@@ -60,7 +60,8 @@ export function ReportCharts({ charts }: { charts: ReportChartData }) {
                 <CardHeader>
                     <CardTitle>Tren booking per status</CardTitle>
                     <p className="text-muted-foreground text-sm">
-                        Komposisi booking {granularityLabel(charts.granularity)}.
+                        Komposisi booking {granularityLabel(charts.granularity)}
+                        .
                     </p>
                 </CardHeader>
                 <CardContent>
@@ -68,9 +69,17 @@ export function ReportCharts({ charts }: { charts: ReportChartData }) {
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart
                                 data={charts.points}
-                                margin={{ top: 8, right: 8, bottom: 8, left: 8 }}
+                                margin={{
+                                    top: 8,
+                                    right: 8,
+                                    bottom: 8,
+                                    left: 8,
+                                }}
                             >
-                                <CartesianGrid strokeDasharray="4 4" className="stroke-border" />
+                                <CartesianGrid
+                                    strokeDasharray="4 4"
+                                    className="stroke-border"
+                                />
                                 <XAxis
                                     dataKey="start_date"
                                     tickFormatter={(value: string) =>
@@ -90,12 +99,20 @@ export function ReportCharts({ charts }: { charts: ReportChartData }) {
                                 />
                                 <Tooltip
                                     labelFormatter={(value) =>
-                                        formatTooltipLabel(String(value), charts)
+                                        formatTooltipLabel(value, charts)
                                     }
                                     contentStyle={tooltipStyle}
-                                    cursor={{ fill: "var(--muted)", opacity: 0.35 }}
+                                    cursor={{
+                                        fill: 'var(--muted)',
+                                        opacity: 0.35,
+                                    }}
                                 />
-                                <Legend wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
+                                <Legend
+                                    wrapperStyle={{
+                                        fontSize: 12,
+                                        paddingTop: 8,
+                                    }}
+                                />
                                 <Bar
                                     dataKey="pending"
                                     name="Pending"
@@ -135,7 +152,8 @@ export function ReportCharts({ charts }: { charts: ReportChartData }) {
                 <CardHeader>
                     <CardTitle>Tren pendapatan</CardTitle>
                     <p className="text-muted-foreground text-sm">
-                        Pembayaran berhasil dikelompokkan berdasarkan tanggal booking.
+                        Pembayaran berhasil dikelompokkan berdasarkan tanggal
+                        booking.
                     </p>
                 </CardHeader>
                 <CardContent>
@@ -143,7 +161,12 @@ export function ReportCharts({ charts }: { charts: ReportChartData }) {
                         <ResponsiveContainer width="100%" height="100%">
                             <AreaChart
                                 data={charts.points}
-                                margin={{ top: 8, right: 8, bottom: 8, left: 8 }}
+                                margin={{
+                                    top: 8,
+                                    right: 8,
+                                    bottom: 8,
+                                    left: 8,
+                                }}
                             >
                                 <defs>
                                     <linearGradient
@@ -165,7 +188,10 @@ export function ReportCharts({ charts }: { charts: ReportChartData }) {
                                         />
                                     </linearGradient>
                                 </defs>
-                                <CartesianGrid strokeDasharray="4 4" className="stroke-border" />
+                                <CartesianGrid
+                                    strokeDasharray="4 4"
+                                    className="stroke-border"
+                                />
                                 <XAxis
                                     dataKey="start_date"
                                     tickFormatter={(value: string) =>
@@ -187,11 +213,14 @@ export function ReportCharts({ charts }: { charts: ReportChartData }) {
                                 />
                                 <Tooltip
                                     labelFormatter={(value) =>
-                                        formatTooltipLabel(String(value), charts)
+                                        formatTooltipLabel(value, charts)
                                     }
                                     formatter={formatRevenueTooltip}
                                     contentStyle={tooltipStyle}
-                                    cursor={{ stroke: chartColors.revenue, strokeDasharray: "4 4" }}
+                                    cursor={{
+                                        stroke: chartColors.revenue,
+                                        strokeDasharray: '4 4',
+                                    }}
                                 />
                                 <Area
                                     type="monotone"
@@ -211,25 +240,35 @@ export function ReportCharts({ charts }: { charts: ReportChartData }) {
     );
 }
 
-function granularityLabel(granularity: ReportChartData["granularity"]) {
+function granularityLabel(granularity: ReportChartData['granularity']) {
     return {
-        day: "per hari",
-        week: "per minggu",
-        month: "per bulan",
+        day: 'per hari',
+        week: 'per minggu',
+        month: 'per bulan',
     }[granularity];
 }
 
-function formatTick(value: string, granularity: ReportChartData["granularity"]) {
+function formatTick(
+    value: string,
+    granularity: ReportChartData['granularity'],
+) {
     const date = new Date(`${value}T00:00:00`);
 
-    if (granularity === "month") {
-        return date.toLocaleDateString("id-ID", { month: "short", year: "2-digit" });
+    if (granularity === 'month') {
+        return date.toLocaleDateString('id-ID', {
+            month: 'short',
+            year: '2-digit',
+        });
     }
 
-    return date.toLocaleDateString("id-ID", { day: "numeric", month: "short" });
+    return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
 }
 
-function formatTooltipLabel(value: string, charts: ReportChartData) {
+function formatTooltipLabel(value: unknown, charts: ReportChartData) {
+    if (typeof value !== 'string') {
+        return '';
+    }
+
     const point = charts.points.find((item) => item.start_date === value);
 
     if (!point) {
@@ -238,15 +277,19 @@ function formatTooltipLabel(value: string, charts: ReportChartData) {
 
     const start = new Date(`${point.start_date}T00:00:00`);
     const end = new Date(`${point.end_date}T00:00:00`);
-    const options: Intl.DateTimeFormatOptions = { day: "numeric", month: "short", year: "numeric" };
+    const options: Intl.DateTimeFormatOptions = {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+    };
 
-    if (charts.granularity === "day") {
-        return start.toLocaleDateString("id-ID", options);
+    if (charts.granularity === 'day') {
+        return start.toLocaleDateString('id-ID', options);
     }
 
-    return `${start.toLocaleDateString("id-ID", options)}–${end.toLocaleDateString("id-ID", options)}`;
+    return `${start.toLocaleDateString('id-ID', options)}–${end.toLocaleDateString('id-ID', options)}`;
 }
 
 function formatRevenueTooltip(value: unknown): [string, string] {
-    return [currency.format(Number(value ?? 0)), "Revenue"];
+    return [currency.format(Number(value ?? 0)), 'Revenue'];
 }

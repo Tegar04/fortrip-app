@@ -135,13 +135,7 @@ class DatabaseSeeder extends Seeder
                 ]);
 
                 $invoice = Invoice::create([
-                    'invoice_number' => 'INV-'.now()->format('Y').'-'.
-                        str_pad(
-                            $booking->id,
-                            5,
-                            '0',
-                            STR_PAD_LEFT
-                        ),
+                    'invoice_number' => 'INV-'.now()->format('Y').'-'.sprintf('%05d', $booking->id),
 
                     'booking_id' => $booking->id,
 

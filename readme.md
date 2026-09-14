@@ -11,45 +11,45 @@ Konten website disimpan di database sehingga dapat dikelola melalui dashboard ta
 
 Update terakhir: **14 September 2026**.
 
-| Area | Status | Catatan |
-|---|---|---|
-| Setup Laravel + React/Inertia | ✅ Selesai | Project dan development tooling berjalan |
-| Database dan migration inti | ✅ Selesai | Tabel bisnis, permission, dan media tersedia |
-| Model, relationship, factory, seeder | ✅ Selesai | Data dummy dapat di-seed |
-| Role dan permission | ✅ Selesai | Role `admin` dan `staff` |
-| Spatie Media Library | ✅ Selesai | Banner, Package, dan Testimonial |
-| Wayfinder typed routes | ✅ Selesai | Actions dan routes TypeScript dihasilkan otomatis |
-| Site Settings CRUD | ✅ Selesai | Pengaturan identitas, kontak, media sosial, dan hero |
-| Banner CRUD | ✅ Selesai | Upload, toggle aktif, dan pengurutan |
-| Package CRUD | ✅ Selesai | Cover, gallery, slug, status aktif, dan unggulan |
-| Testimonial CRUD | ✅ Selesai | Foto opsional, rating, dan toggle aktif |
-| Customer dan Booking | ✅ Selesai | Modul admin dan booking publik tanpa login tersedia, aman, dan telah diuji |
-| Invoice, Payment, dan PDF | ✅ Selesai | Invoice, histori pembayaran, status otomatis, dan PDF A4 |
-| Laporan dan Export Excel | ✅ Selesai | Filter periode, statistik, grafik Recharts, tabel detail, dan XLSX |
-| Landing page publik dinamis | ✅ Selesai secara fungsional | Home, daftar/detail paket, booking publik, About, Contact, dan SEO teknis tersedia |
-| Finalisasi dan deployment | 🟡 Dalam proses | Audit, QA visual lintas perangkat/browser, dan deployment masih diperlukan |
+| Area                                 | Status                       | Catatan                                                                            |
+| ------------------------------------ | ---------------------------- | ---------------------------------------------------------------------------------- |
+| Setup Laravel + React/Inertia        | ✅ Selesai                   | Project dan development tooling berjalan                                           |
+| Database dan migration inti          | ✅ Selesai                   | Tabel bisnis, permission, dan media tersedia                                       |
+| Model, relationship, factory, seeder | ✅ Selesai                   | Data dummy dapat di-seed                                                           |
+| Role dan permission                  | ✅ Selesai                   | Role `admin` dan `staff`                                                           |
+| Spatie Media Library                 | ✅ Selesai                   | Banner, Package, dan Testimonial                                                   |
+| Wayfinder typed routes               | ✅ Selesai                   | Actions dan routes TypeScript dihasilkan otomatis                                  |
+| Site Settings CRUD                   | ✅ Selesai                   | Pengaturan identitas, kontak, media sosial, dan hero                               |
+| Banner CRUD                          | ✅ Selesai                   | Upload, toggle aktif, dan pengurutan                                               |
+| Package CRUD                         | ✅ Selesai                   | Cover, gallery, slug, status aktif, dan unggulan                                   |
+| Testimonial CRUD                     | ✅ Selesai                   | Foto opsional, rating, dan toggle aktif                                            |
+| Customer dan Booking                 | ✅ Selesai                   | Modul admin dan booking publik tanpa login tersedia, aman, dan telah diuji         |
+| Invoice, Payment, dan PDF            | ✅ Selesai                   | Invoice, histori pembayaran, status otomatis, dan PDF A4                           |
+| Laporan dan Export Excel             | ✅ Selesai                   | Filter periode, statistik, grafik Recharts, tabel detail, dan XLSX                 |
+| Landing page publik dinamis          | ✅ Selesai secara fungsional | Home, daftar/detail paket, booking publik, About, Contact, dan SEO teknis tersedia |
+| Finalisasi dan deployment            | 🟡 Dalam proses              | Audit, QA visual lintas perangkat/browser, dan deployment masih diperlukan         |
 
 Dokumentasi progres yang lebih terperinci tersedia di [`readme.progress.md`](readme.progress.md).
 
 ## Stack Teknologi
 
-| Teknologi | Versi | Fungsi |
-|---|---|---|
-| PHP | 8.5 | Runtime backend |
-| Laravel | 13.29 | Framework backend |
-| Inertia Laravel | 3.3.1 | Jembatan Laravel dan React |
-| React | 19.2.8 | Antarmuka pengguna |
-| Tailwind CSS | 4.3.3 | Styling |
-| Vite | 8 | Development server dan production build |
-| Laravel Fortify | 1.39 | Autentikasi |
-| Laravel Wayfinder | 0.1.21 | Typed routes untuk TypeScript |
-| Spatie Permission | 8.3.0 | Role dan permission |
-| Spatie Media Library | 11.23.5 | Upload dan pengelolaan media |
-| Spatie Sluggable | 4.0.3 | Slug otomatis untuk package |
-| Laravel DomPDF | 3.1.2 | Pembuatan invoice PDF |
-| Laravel Excel | 4.0.2 | Export laporan Excel |
-| Recharts | 3.10.1 | Stacked bar chart dan area chart laporan |
-| Pest | 5.1.3 | Automated testing |
+| Teknologi            | Versi   | Fungsi                                   |
+| -------------------- | ------- | ---------------------------------------- |
+| PHP                  | 8.5     | Runtime backend                          |
+| Laravel              | 13.29   | Framework backend                        |
+| Inertia Laravel      | 3.3.1   | Jembatan Laravel dan React               |
+| React                | 19.2.8  | Antarmuka pengguna                       |
+| Tailwind CSS         | 4.3.3   | Styling                                  |
+| Vite                 | 8       | Development server dan production build  |
+| Laravel Fortify      | 1.39    | Autentikasi                              |
+| Laravel Wayfinder    | 0.1.21  | Typed routes untuk TypeScript            |
+| Spatie Permission    | 8.3.0   | Role dan permission                      |
+| Spatie Media Library | 11.23.5 | Upload dan pengelolaan media             |
+| Spatie Sluggable     | 4.0.3   | Slug otomatis untuk package              |
+| Laravel DomPDF       | 3.1.2   | Pembuatan invoice PDF                    |
+| Laravel Excel        | 4.0.2   | Export laporan Excel                     |
+| Recharts             | 3.10.1  | Stacked bar chart dan area chart laporan |
+| Pest                 | 5.1.3   | Automated testing                        |
 
 ## Arsitektur
 
@@ -337,8 +337,8 @@ npm run dev
 
 ## Kredensial Development
 
-| Role | Email | Password |
-|---|---|---|
+| Role  | Email              | Password   |
+| ----- | ------------------ | ---------- |
 | Admin | `admin@travel.com` | `password` |
 | Staff | `staff@travel.com` | `password` |
 
@@ -367,8 +367,7 @@ Status verifikasi terakhir:
 
 - 213 test dijalankan: 210 lulus dan 3 dilewati;
 - 1.280 assertion;
-- TypeScript, lint file terkait, Pint, dan production build berhasil;
-- PHPStan terarah untuk file terkait berhasil; analisis penuh tetap perlu diverifikasi pada tahap finalisasi.
+- TypeScript, lint, formatter PHP, PHPStan, seluruh test, dan production build berhasil.
 
 ## Roadmap
 

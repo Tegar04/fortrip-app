@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\BannerFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
@@ -10,6 +11,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Banner extends Model implements HasMedia
 {
+    /** @use HasFactory<BannerFactory> */
     use HasFactory, InteractsWithMedia;
 
     protected $fillable = [
@@ -42,10 +44,10 @@ class Banner extends Model implements HasMedia
     public function registerMediaConversions(?Media $media = null): void
     {
         $this->addMediaConversion('thumb')
+            ->performOnCollections('image')
+            ->nonQueued()
             ->width(400)
             ->height(225)
-            ->sharpen(5)
-            ->performOnCollections('image')
-            ->nonQueued();
+            ->sharpen(5);
     }
 }

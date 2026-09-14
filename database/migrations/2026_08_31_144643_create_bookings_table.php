@@ -29,7 +29,7 @@ return new class extends Migration
                 'pending',
                 'confirmed',
                 'cancelled',
-                'completed'
+                'completed',
             ])->default('pending');
 
             $table->timestamps();
