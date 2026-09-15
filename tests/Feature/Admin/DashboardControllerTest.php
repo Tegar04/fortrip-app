@@ -17,7 +17,7 @@ function dashboardModuleUser(string $email): User
     return User::query()->where('email', $email)->firstOrFail();
 }
 
-test('staff sees operational statistics and prioritized dashboard records', function () {
+test('staff sees localized dates, operational statistics, and prioritized dashboard records', function () {
     $this->withoutVite();
     $this->travelTo(CarbonImmutable::parse('2026-09-15 12:00:00'));
     $staff = dashboardModuleUser('staff@travel.com');

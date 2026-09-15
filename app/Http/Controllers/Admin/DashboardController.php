@@ -74,10 +74,11 @@ class DashboardController extends Controller
             ->limit(6)
             ->get()
             ->map(fn (Booking $booking): array => $this->bookingData($booking));
+        $today->locale('id');
 
         return Inertia::render('dashboard', [
-            'today_label' => $today->locale('id')->translatedFormat('l, d F Y'),
-            'month_label' => $today->locale('id')->translatedFormat('F Y'),
+            'today_label' => $today->translatedFormat('l, d F Y'),
+            'month_label' => $today->translatedFormat('F Y'),
             'statistics' => [
                 'pending_bookings' => Booking::query()->where('status', 'pending')->count(),
                 'upcoming_departures' => Booking::query()
