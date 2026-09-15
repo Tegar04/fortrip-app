@@ -12,6 +12,7 @@ import HeroCarousel from '@/components/public/hero-carousel';
 import PackageCard from '@/components/public/package-card';
 import SectionHeading from '@/components/public/section-heading';
 import TestimonialCard from '@/components/public/testimonial-card';
+import { getFeaturedPackageGridItemClassName } from '@/pages/public/home-layout';
 import type {
     HomeContent,
     PublicBanner,
@@ -106,13 +107,20 @@ export default function Home({
                     />
 
                     {featuredPackages.length > 0 ? (
-                        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                            {featuredPackages.map((travelPackage) => (
-                                <PackageCard
+                        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-6">
+                            {featuredPackages.map((travelPackage, index) => (
+                                <div
                                     key={travelPackage.id}
-                                    travelPackage={travelPackage}
-                                    whatsappUrl={site.whatsapp_url}
-                                />
+                                    className={getFeaturedPackageGridItemClassName(
+                                        index,
+                                        featuredPackages.length,
+                                    )}
+                                >
+                                    <PackageCard
+                                        travelPackage={travelPackage}
+                                        whatsappUrl={site.whatsapp_url}
+                                    />
+                                </div>
                             ))}
                         </div>
                     ) : (
