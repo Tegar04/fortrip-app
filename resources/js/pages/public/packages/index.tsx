@@ -3,6 +3,7 @@ import { Link } from '@inertiajs/react';
 import { Compass, MessageCircle, Sparkles } from 'lucide-react';
 import PackageCard from '@/components/public/package-card';
 import PublicPagination from '@/components/public/public-pagination';
+import { getPackageGridItemClassName } from '@/pages/public/package-grid-layout';
 import { home } from '@/routes';
 import type {
     PaginatedData,
@@ -80,13 +81,20 @@ export default function PackageIndex({ site, seo, packages }: Props) {
                                 </p>
                             </div>
 
-                            <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
-                                {packages.data.map((travelPackage) => (
-                                    <PackageCard
+                            <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-6">
+                                {packages.data.map((travelPackage, index) => (
+                                    <div
                                         key={travelPackage.id}
-                                        travelPackage={travelPackage}
-                                        whatsappUrl={site.whatsapp_url}
-                                    />
+                                        className={getPackageGridItemClassName(
+                                            index,
+                                            packages.data.length,
+                                        )}
+                                    >
+                                        <PackageCard
+                                            travelPackage={travelPackage}
+                                            whatsappUrl={site.whatsapp_url}
+                                        />
+                                    </div>
                                 ))}
                             </div>
 
