@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\PackageController;
 use App\Http\Controllers\Admin\PaymentController;
@@ -16,9 +17,7 @@ Route::prefix('admin')
     ->middleware(['auth', 'role:admin|staff'])
     ->group(function () {
 
-        Route::get('/dashboard', function () {
-            return inertia('dashboard');
-        })->name('dashboard');
+        Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
         Route::controller(SiteSettingController::class)
             ->prefix('site-settings')

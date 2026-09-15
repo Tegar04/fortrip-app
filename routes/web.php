@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AboutController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PublicBookingController;
@@ -17,10 +18,8 @@ Route::get('/robots.txt', RobotsController::class)->name('robots');
 Route::get('/packages', [PublicPackageController::class, 'index'])->name('packages.index');
 Route::get('/packages/{package:slug}', [PublicPackageController::class, 'show'])->name('packages.show');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', function () {
-        return inertia('dashboard');
-    })->name('dashboard');
+Route::middleware(['auth', 'role:admin|staff'])->group(function () {
+    Route::get('/dashboard', DashboardController::class)->name('dashboard');
 });
 
 Route::post('/packages/{package:slug}/bookings', [PublicBookingController::class, 'store'])
