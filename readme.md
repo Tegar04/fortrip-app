@@ -7,6 +7,32 @@ Aplikasi website Trip & Travel berbasis Laravel, Inertia, dan React. Aplikasi in
 
 Konten website disimpan di database sehingga dapat dikelola melalui dashboard tanpa mengubah kode.
 
+## Preview Aplikasi
+
+Berikut beberapa tampilan utama dari aplikasi **ForTrip**.
+
+### Website Publik
+
+#### Homepage
+![Homepage Publik](docs/screenshots/homepage_fullsize.png)
+
+#### Detail Package
+![Detail Package](docs/screenshots/packages.png)
+
+#### Form Booking Publik
+![Form Booking Publik](docs/screenshots/booking.png)
+
+### Dashboard Admin
+
+#### Dashboard
+![Dashboard Admin](docs/screenshots/dashboard_admin.png)
+
+#### Manajemen Package
+![Manajemen Package](docs/screenshots/detail_packages.png)
+
+#### Laporan dan Statistik
+![Laporan dan Statistik](docs/screenshots/report.png)
+
 ## Status Proyek
 
 Update terakhir: **14 September 2026**.
